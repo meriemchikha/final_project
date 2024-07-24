@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import login from "../assets/login.jpg";
 
 export default function InscriptionForm() {
   const navigate = useNavigate();
@@ -14,8 +15,9 @@ export default function InscriptionForm() {
     email: "",
     password: "",
     phone_mobile: "",
+    address: "",
   });
-  console.info(formData);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,16 +27,14 @@ export default function InscriptionForm() {
     e.preventDefault();
     setErrorMessage("");
 
-    // Valider le mot de passe
     if (!passwordRegex.test(formData.password)) {
-      // eslint-disable-next-line no-alert
       setErrorMessage(
         "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre."
       );
       return;
     }
-    // Si le mot de passe est valide, soumettre les données
-    fetch("http://localhost:3350/api/users", {
+
+    fetch("http://localhost:3310/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,8 +42,7 @@ export default function InscriptionForm() {
       body: JSON.stringify(formData),
     })
       .then((res) => res.json())
-      // eslint-disable-next-line no-unused-vars
-      .then((res) => {
+      .then(() => {
         navigate("/connecter");
       })
       .catch((error) => {
@@ -52,97 +51,147 @@ export default function InscriptionForm() {
   };
 
   return (
-    <div className="flex flex-col  items-center py-24">
-      <form
-        className="space-y-4 p-4 md:items-center  flex flex-col justify-center shadow-2xl bg-white w-1/2   "
-        onSubmit={handleSubmit}
-      >
-        <div className="flex  flex-row gap-6 md:w-96  ">
-          <div className="flex flex-col">
-            <h2>Prénom</h2>
-            <input
-              className="shadow appearance-none border rounded w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              name="firstname"
-              value={formData.firstname}
-              onChange={handleChange}
-              placeholder="Firstname"
-              required
-            />
-          </div>
-          <div className="flex flex-col">
-            <h2>Nom de famille</h2>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              name="lastname"
-              value={formData.lastname}
-              onChange={handleChange}
-              placeholder="Lastname"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="md:w-96">
-          <h2>Numéro de téléphone</h2>
-          <input
-            className="shadow appearance-none border rounded w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="texte"
-            name="phone_mobile"
-            value={formData.phone_mobile}
-            onChange={handleChange}
-            placeholder="Phone Number"
-            required
+    <div className="flex min-h-screen bg-gradient-to-r from-pink-200 via-pink-400 to-pink-500 items-center justify-center px-4">
+      <div className="flex flex-col md:flex-row items-center bg-white shadow-2xl rounded-lg overflow-hidden relative w-full   p-6 md:p-12">
+        <div className="md:flex-shrink-0 relative w-full md:w-1/2">
+          <img
+            src={login}
+            alt="Login"
+            className="object-cover w-full h-64 md:h-full"
           />
+          <h1 className="absolute inset-0 flex items-center justify-center text-2xl md:text-2xl lg:text-3xl text-rose-700 text-opacity-80">
+            Pensez à s'inscrire !!
+          </h1>
         </div>
-        <div className="md:w-96">
-          <h2>Email</h2>
-          <input
-            className="shadow appearance-none border rounded  w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-          />
-        </div>
-
-        <div className="md:w-96">
-          <h2>Mot de passe</h2>
-          <input
-            className="shadow appearance-none border rounded w-full  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline relative"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Mot de passe"
-            required
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          {errorMessage && (
-            <p className="text-red-500 md:w-96 ">{errorMessage}</p>
-          )}
-          <button
-            type="submit"
-            className=" bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 md:w-96 rounded focus:outline-none focus:shadow-outline"
+        <div className="flex flex-col py-8 px-4 md:px-8 w-full md:w-1/2">
+          <form
+            className="space-y-4 p-4 flex flex-col justify-center w-full"
+            onSubmit={handleSubmit}
           >
-            S'inscrire
-          </button>
-
-          <Link to="/connecter">
-            <button
-              type="button"
-              className="bg-pink-400 hover:bg-pink-700 text-white font-bold w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              se connecter
-            </button>
-          </Link>
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex flex-col w-full md:w-1/2">
+                <label
+                  htmlFor="firstname"
+                  className="text-gray-700 font-semibold mb-1"
+                >
+                  Prénom
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="firstname"
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  placeholder="Firstname"
+                  required
+                />
+              </div>
+              <div className="flex flex-col w-full md:w-1/2">
+                <label
+                  htmlFor="lastname"
+                  className="text-gray-700 font-semibold mb-1"
+                >
+                  Nom de famille
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="lastname"
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  placeholder="Lastname"
+                  required
+                />
+              </div>
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="address"
+                className="text-gray-700 font-semibold mb-1"
+              >
+                Address
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="address"
+                required
+              />
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="phone_mobile"
+                className="text-gray-700 font-semibold mb-1"
+              >
+                Numéro de téléphone
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                name="phone_mobile"
+                value={formData.phone_mobile}
+                onChange={handleChange}
+                placeholder="Phone Number"
+                required
+              />
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="email"
+                className="text-gray-700 font-semibold mb-1"
+              >
+                Email
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                required
+              />
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="password"
+                className="text-gray-700 font-semibold mb-1"
+              >
+                Mot de passe
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Mot de passe"
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              {errorMessage && (
+                <p className="text-red-500 w-full">{errorMessage}</p>
+              )}
+              <button
+                type="submit"
+                className="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200"
+              >
+                S'inscrire
+              </button>
+              <div className="flex gap-1">
+                <p>Vous avez déjà un compte?</p>
+                <Link to="/connecter">
+                  <p className="text-violet-700">Cliquer ici</p>
+                </Link>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

@@ -2,10 +2,13 @@ const express = require("express");
 const hashPassword = require("./services/hashPassword");
 const userController = require("./controllers/userController");
 const produitController = require("./controllers/produitController");
-const commandeController = require("./controllers/commandeController");
+const commandController = require("./controllers/commandController");
 const avisController = require("./controllers/avisController");
-const paiementController = require("./controllers/paiementController");
+const paymentController = require("./controllers/paymentController");
 const wishlistController = require("./controllers/wishlistController");
+const cartController = require("./controllers/cartController");
+const categoryController = require("./controllers/categoryController");
+const newsletterController = require("./controllers/newsletterController");
 
 const upLoad = require("./services/upLoad");
 const hashEditPassword = require("./services/hashEditPassword");
@@ -37,40 +40,49 @@ router.patch(
 );
 
 // Routes Categories
-// router.post("/categories", categoriesController.create);
-// router.get("/categories", categoriesController.browse);
-// router.get("/categories/:id", categoriesController.read);
-// router.delete("/categories/:id", categoriesController.deleteCatg);
+router.post("/category", upLoad, categoryController.add);
+router.get("/category", categoryController.getAllProductCat);
+router.get("/category/:id", categoryController.read);
+router.delete("/category/:id", categoryController.deleteProductCat);
+router.put("/category", categoryController.update);
 
 // Routes Produits
 router.post("/product", upLoad, produitController.create);
 router.get("/product", produitController.browse);
 router.get("/product/:id", produitController.read);
-// router.delete("/produit/:id", produitController.deleteProduit);
+router.delete("/product/:id", produitController.deleteProduit);
 
 // Routes Commandes
-router.post("/commande", commandeController.create);
-router.get("/commande", commandeController.browse);
-router.get("/commande/:id", commandeController.read);
+router.post("/command", commandController.create);
+router.get("/command", commandController.browse);
+router.get("/command/:id", commandController.read);
 
 // Routes Avis
-router.post("/avis", avisController.create);
-router.get("/avis", avisController.browse);
-router.get("/avis/:id", avisController.read);
-router.put("/avis/:id", avisController.edit);
-router.delete("/avis/:id", avisController.deleteAvis);
+router.post("/comment", avisController.create);
+router.get("/comment", avisController.browse);
+router.get("/comment/:id", avisController.read);
+router.put("/comment/:id", avisController.edit);
+router.delete("/comment/:id", avisController.deleteAvis);
 
 // Routes Paiement
-router.post("/pay", paiementController.create);
-router.get("/paiement", paiementController.browse);
-router.get("/paiement/:id", paiementController.read);
+router.post("/pay", paymentController.create);
+router.get("/payment", paymentController.browse);
+router.get("/payment/:id", paymentController.read);
 
 // Route Panier
+router.get("/all-cart", cartController.browse);
+router.post("/cart", cartController.addCart);
 
 // Routes Wishlist
-// router.get("/wishlist/user/user_id");
-router.get("/wishlist", wishlistController.browse);
-router.delete("/wishlist/:id", wishlistController.read);
+router.get("/wishlist", wishlistController.getAllProductsInWishlist);
+router.get("/wishlist/:id", wishlistController.read);
+router.get("/wishlist/:id", verifyToken, wishlistController.read);
+router.post("/wishlist", verifyToken, wishlistController.add);
+router.delete("/wishlist/:id", wishlistController.deleteProductInWishlist);
+
+// Route newsletter
+router.get("/all-newsletter", newsletterController.getAllNewsletter);
+router.get("/newsletter/:id", newsletterController.read);
 
 /* ************************************************************************* */
 

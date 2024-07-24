@@ -3,8 +3,8 @@ const tables = require("../tables");
 
 const create = async (req, res) => {
   try {
-    const { note, commentaire } = req.body;
-    const result = await tables.Avis.create(note, commentaire);
+    const { firstname, comment, note } = req.body;
+    const result = await tables.avis.create(firstname, comment, note);
     console.info(result.affectedRows);
     if (result.affectedRows) {
       res.status(201).json("created");
@@ -18,10 +18,10 @@ const create = async (req, res) => {
 const browse = async (req, res, next) => {
   try {
     // Fetch all Avis from the database
-    const Avis = await tables.Avis.readAll();
+    const avis = await tables.avis.readAll();
 
     // Respond with the Avis in JSON format
-    res.json(Avis);
+    res.json(avis);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
@@ -30,14 +30,14 @@ const browse = async (req, res, next) => {
 const read = async (req, res, next) => {
   try {
     // Fetch a specific Avis from the database based on the provided ID
-    const Avis = await tables.Avis.read(req.params.id);
+    const avis = await tables.avis.read(req.params.id);
 
     // If the Avis is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the Avis in JSON format
-    if (Avis == null) {
+    if (avis == null) {
       res.sendStatus(404);
     } else {
-      res.json(Avis);
+      res.json(avis);
     }
   } catch (err) {
     // Pass any errors to the error-handling middleware
@@ -47,12 +47,12 @@ const read = async (req, res, next) => {
 const edit = async (req, res) => {
   try {
     const { id } = req.params;
-    const { note, commentaire } = req.body;
+    const { firstname, comment, note } = req.body;
 
-    const [result] = await tables.Avis.editAvis(id, note, commentaire);
+    const [result] = await tables.avis.editAvis(id, firstname, comment, note);
 
     if (result.affectedRows) {
-      res.status(200).json({ message: "Avis updated !" });
+      res.status(200).json({ message: "Comment updated !" });
     } else {
       res.status(401).json("probleme");
     }
@@ -63,10 +63,10 @@ const edit = async (req, res) => {
 const deleteAvis = async (req, res) => {
   try {
     const { id } = req.params;
-    const [result] = await tables.Avis.deleteAvis(id);
+    const [result] = await tables.avis.deleteAvis(id);
     if (result.affectedRows) {
       res.status(200).json({
-        message: " Avis supprimée !",
+        message: " Comment supprimée !",
       });
     } else {
       res.status(401).send("probleme");

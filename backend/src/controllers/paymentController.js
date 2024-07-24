@@ -1,9 +1,10 @@
+/* eslint-disable camelcase */
 const tables = require("../tables");
 
 const create = async (req, res) => {
   try {
-    const { montant } = req.body;
-    const result = await tables.Paiement.create(montant);
+    const { total_price } = req.body;
+    const result = await tables.Paiement.create(total_price);
     console.info(result.affectedRows);
     if (result.affectedRows) {
       res.status(201).json("created");
@@ -17,10 +18,10 @@ const create = async (req, res) => {
 const browse = async (req, res, next) => {
   try {
     // Fetch all Paiement from the database
-    const Paiement = await tables.Paiement.readAll();
+    const Payment = await tables.payment.readAll();
 
     // Respond with the Paiement in JSON format
-    res.json(Paiement);
+    res.json(Payment);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
@@ -29,14 +30,14 @@ const browse = async (req, res, next) => {
 const read = async (req, res, next) => {
   try {
     // Fetch a specific Paiement from the database based on the provided ID
-    const Paiement = await tables.Paiement.read(req.params.id);
+    const Payment = await tables.payment.read(req.params.id);
 
     // If the Paiement is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the Paiement in JSON format
-    if (Paiement == null) {
+    if (Payment == null) {
       res.sendStatus(404);
     } else {
-      res.json(Paiement);
+      res.json(Payment);
     }
   } catch (err) {
     // Pass any errors to the error-handling middleware

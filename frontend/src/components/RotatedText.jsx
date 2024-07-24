@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function RotetadText() {
+export default function RotatedText() {
   return (
     <div className=" relative w-[150px] h-[150px]">
       <span

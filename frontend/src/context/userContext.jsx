@@ -24,7 +24,7 @@ export function UserProvider({ children }) {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/me`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
           {
             headers: {
               "Content-Type": "application/json",

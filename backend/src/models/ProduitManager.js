@@ -29,7 +29,7 @@ class ProduitManager extends AbstractManager {
   async read(id) {
     // Execute the SQL SELECT query to retrieve a specific produit by its ID
     const [rows] = await this.database.query(
-      `select nom, description from ${this.table} where id = ?`,
+      `select * from ${this.table} where id = ?`,
       [id]
     );
 

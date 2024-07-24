@@ -1,18 +1,18 @@
 /* eslint-disable camelcase */
 const AbstractManager = require("./AbstractManager");
 
-class CommandeManager extends AbstractManager {
+class CommandManager extends AbstractManager {
   constructor() {
     // Call the constructor of the parent class (AbstractManager)
     // and pass the table name "commade" as configuration
-    super({ table: "commandes" });
+    super({ table: "command" });
   }
 
-  async create(montant_total) {
+  async create(payment, statut) {
     const [result] = await this.database.query(
-      `insert into ${this.table} (montant_total) values (?)`,
+      `insert into ${this.table} (payment, statut) values (?, ?)`,
       // eslint-disable-next-line camelcase
-      [montant_total]
+      [payment, statut]
     );
     return result;
   }
@@ -36,4 +36,4 @@ class CommandeManager extends AbstractManager {
     return rows[0];
   }
 }
-module.exports = CommandeManager;
+module.exports = CommandManager;

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const AbstractManager = require("./AbstractManager");
 
 class userManager extends AbstractManager {
@@ -8,11 +9,18 @@ class userManager extends AbstractManager {
   }
 
   // eslint-disable-next-line camelcase
-  async create(firstname, lastname, email, hashPassword, phone_mobile) {
+  async create(
+    firstname,
+    lastname,
+    email,
+    hashPassword,
+    phone_mobile,
+    address
+  ) {
     const [result] = await this.database.query(
-      `insert into ${this.table} (firstname, lastname, email, hashPassword, phone_mobile) values (?, ?, ?, ?, ?)`,
+      `insert into ${this.table} (firstname, lastname, email, hashPassword, phone_mobile, address) values (?, ?, ?, ?, ?, ?)`,
       // eslint-disable-next-line camelcase
-      [firstname, lastname, email, hashPassword, phone_mobile]
+      [firstname, lastname, email, hashPassword, phone_mobile, address]
     );
     return result;
   }
@@ -51,7 +59,7 @@ class userManager extends AbstractManager {
 
   getUserById(id) {
     return this.database.query(
-      `SELECT firstname, lastname, email, phone_mobile FROM ${this.table} WHERE id = ?`,
+      `SELECT firstname, lastname, email, phone_mobile, address FROM ${this.table} WHERE id = ?`,
       [id]
     );
   }

@@ -3,8 +3,8 @@ const tables = require("../tables");
 
 const create = async (req, res) => {
   try {
-    const { montant_total } = req.body;
-    const result = await tables.commandes.create(montant_total);
+    const { payment, statut } = req.body;
+    const result = await tables.command.create(payment, statut);
     console.info(result.affectedRows);
     if (result.affectedRows) {
       res.status(201).json("created");
@@ -18,7 +18,7 @@ const create = async (req, res) => {
 const browse = async (req, res, next) => {
   try {
     // Fetch all commandes from the database
-    const commandes = await tables.commandes.readAll();
+    const commandes = await tables.command.readAll();
 
     // Respond with the bookings in JSON format
     res.json(commandes);
@@ -30,7 +30,7 @@ const browse = async (req, res, next) => {
 const read = async (req, res, next) => {
   try {
     // Fetch a specific commandes from the database based on the provided ID
-    const commandes = await tables.commandes.read(req.params.id);
+    const commandes = await tables.command.read(req.params.id);
 
     // If the commandes is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the commandes in JSON format

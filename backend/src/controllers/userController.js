@@ -7,7 +7,8 @@ const tables = require("../tables");
 // eslint-disable-next-line consistent-return
 const create = async (req, res, next) => {
   // Extraire les données utilisateur du corps de la requête
-  const { firstname, lastname, email, hashPassword, phone_mobile } = req.body;
+  const { firstname, lastname, email, hashPassword, phone_mobile, address } =
+    req.body;
   try {
     // Vérifier si l'email existe déjà dans la base de données
     const [existUser] = await tables.user.getUserByEmail(email);
@@ -22,7 +23,8 @@ const create = async (req, res, next) => {
       lastname,
       email,
       hashPassword,
-      phone_mobile
+      phone_mobile,
+      address
     );
 
     // // Envoyer l'e-mail de bienvenue
@@ -125,7 +127,7 @@ const readById = async (req, res) => {
     const id = req.payload;
     const user = await tables.user.getUserById(id);
     if (user.length) {
-      res.status(200).json(user[0]);
+      res.status(200).json({ message: "isLogged", user: user[0] });
     } else {
       res.status(401).send("Erreur");
     }

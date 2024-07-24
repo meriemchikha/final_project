@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/userContext";
 
@@ -19,7 +19,7 @@ export default function LoginForm() {
   const handlSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:3350/api/login", {
+    fetch("http://localhost:3310/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,16 +43,15 @@ export default function LoginForm() {
   };
 
   return (
-    <main className="min-h-[calc(100vh-160px)] bg-cream">
+    <main className="min-h-[calc(100vh-200px)]  ">
       <div className="flex flex-col  items-center py-24">
         <form
           className="space-y-4 p-4 items-center  flex flex-col justify-center shadow-2xl bg-white w-1/2 "
           onSubmit={handlSubmit}
         >
-          <h1 className=" mt-8 font-jacques text-xl">Se connecter</h1>
-          <div className="relative flex flex-col gap-3 pb-10">
+          <div className=" flex flex-col w-full md:w-1/2 gap-6">
             <input
-              className="border-2 pl-2 h-12 "
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
               type="email"
               name="email"
               value={dataForm.email}
@@ -60,7 +59,7 @@ export default function LoginForm() {
               placeholder="Eamil"
             />
             <input
-              className="border-2 pl-2 h-12"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="password"
               name="password"
               value={dataForm.password}
@@ -72,13 +71,20 @@ export default function LoginForm() {
               <p className="absolute bottom-0 text-red-600">{message}</p>
             )}
           </div>
-
-          <button
-            type="submit"
-            className="bg-pink-400 hover:bg-pink-700 text-white font-bold w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Se connecter
-          </button>
+          <div>
+            <button
+              type="submit"
+              className="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200"
+            >
+              Se connecter
+            </button>
+          </div>
+          <div className=" flex gap-1">
+            <p>Créer un compte? </p>
+            <Link to="/inscrire">
+              <p className=" text-violet-700">Cliquer ici</p>
+            </Link>
+          </div>
         </form>
       </div>
     </main>

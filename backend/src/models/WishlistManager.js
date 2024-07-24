@@ -7,7 +7,7 @@ class WishlistManager extends AbstractManager {
     super({ table: "Wishlist" });
   }
 
-  async readAll() {
+  async getAllProductsInWishlist() {
     // Execute the SQL SELECT query to retrieve all Wishlist from the "Wishlist" table
     const [rows] = await this.database.query(`select * from ${this.table}`);
 
@@ -15,15 +15,38 @@ class WishlistManager extends AbstractManager {
     return rows;
   }
 
-  async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific Wishlist by its ID
+  async readProductByUser(id) {
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
+      `select wishlist.*, product.id AS id_product, 
+     product.name ,
+  product.description,
+  product.price,
+  product.stock,
+  product.category_id,
+  product.sous_category_id,
+   from ${this.table} JOIN product ON wishlist.product_id = product.id where user_id = ?`,
       [id]
     );
+    // return rows[0];
+    return [rows];
+  }
 
-    // Return the first row of the result, which represents the Avis
-    return rows[0];
+  // eslint-disable-next-line camelcase
+  async addProductInWishlist(quantity, product_id, id) {
+    const [result] = await this.database.query(
+      `INSERT INTO ${this.table} (
+      quantity,
+      product_id,
+      user_id)
+    VALUES (?, ?, ?)`,
+      // eslint-disable-next-line camelcase
+      [quantity, product_id, id]
+    );
+    return result;
+  }
+
+  async deleteProductInWishlist(id) {
+    return this.database.query(`delete from ${this.table} where id = ?`, [id]);
   }
 }
 module.exports = WishlistManager;

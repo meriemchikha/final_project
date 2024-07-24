@@ -6,7 +6,6 @@ import { IoMdLogOut } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPerson } from "react-icons/go";
 import { PiShoppingCartLight } from "react-icons/pi";
-import { HiSearch } from "react-icons/hi";
 import { UserContext } from "../context/userContext";
 import ModalLogOut from "../modal/ModalLogOut";
 
@@ -23,7 +22,7 @@ export default function Login() {
   };
 
   const handleClick = () => {
-    fetch("http://localhost:3350/api/logout", {
+    fetch("http://localhost:3310/api/logout", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -66,20 +65,11 @@ export default function Login() {
       ) : (
         <ul className="hidden md:flex gap-8 ">
           <button>
-            <HiSearch size={24} />
-          </button>
-          <button>
             <PiShoppingCartLight size={24} />
           </button>
           <Link to="/inscrire">
             <GoPerson size={24} />
           </Link>
-          <button
-            type="button"
-            className=" lg:block hidden bg-[#C2A74E] text-white text-[10px] font-semibold px-[29px] py-[11px] transition-bg hover:bg-black hover:text-white"
-          >
-            Btn
-          </button>
         </ul>
       )}
     </>

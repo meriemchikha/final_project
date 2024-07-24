@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "Description": "",
+    "image": "/src/assets/item1.jpg",
+    "price": 21.99
+  },
+  {
+    "id": 2,
+    "Description": "",
+    "image": "/src/assets/item2.jpg"
+     
+  },
+  {
+    "id": 3,
+    "Description": "",
+    "image": "/src/assets/item3.jpg"
+   
+  },
+  {
+    "id": 4,
+    "Description": "",
+    "image": "/src/assets/item4.jpg"
+  },
+  {
+    "id": 5,
+    "Description": "",
+    "image": "/src/assets/item5.jpg"
+  },
+    {
+    "id": 6,
+    "Description": "",
+    "image": "/src/assets/palette.jpg"
+  }
+]

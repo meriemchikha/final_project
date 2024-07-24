@@ -5,14 +5,14 @@ class AvisManager extends AbstractManager {
   constructor() {
     // Call the constructor of the parent class (AbstractManager)
     // and pass the table name "Avis" as configuration
-    super({ table: "Avis" });
+    super({ table: "avis" });
   }
 
-  async create(note, commentaire) {
+  async create(firstname, comment, note) {
     const [result] = await this.database.query(
-      `insert into ${this.table} (note, commentaire) values (?, ?)`,
+      `insert into ${this.table} (firstname, comment, note) values (?, ?, ?)`,
       // eslint-disable-next-line camelcase
-      [note, commentaire]
+      [firstname, comment, note]
     );
     return result;
   }
@@ -36,10 +36,10 @@ class AvisManager extends AbstractManager {
     return rows[0];
   }
 
-  editAvis(id, note, commentaire) {
+  editAvis(id, firstname, comment, note) {
     return this.database.query(
-      `UPDATE ${this.table} set note = ?, commentaire = ? where id=?`,
-      [note, commentaire, id]
+      `UPDATE ${this.table} set firstname = ?, comment = ?, note = ? where id=?`,
+      [firstname, comment, note, id]
     );
   }
 
