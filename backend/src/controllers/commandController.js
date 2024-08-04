@@ -3,8 +3,16 @@ const tables = require("../tables");
 
 const create = async (req, res) => {
   try {
-    const { payment, statut } = req.body;
-    const result = await tables.command.create(payment, statut);
+    const id = req.payload;
+    const user_id = id;
+    const { payment, statut, cart_id, payment_id } = req.body;
+    const result = await tables.command.create(
+      payment,
+      statut,
+      user_id,
+      cart_id,
+      payment_id
+    );
     console.info(result.affectedRows);
     if (result.affectedRows) {
       res.status(201).json("created");
@@ -29,8 +37,10 @@ const browse = async (req, res, next) => {
 };
 const read = async (req, res, next) => {
   try {
+    const userId = req.payload;
+    const { id } = req.params;
     // Fetch a specific commandes from the database based on the provided ID
-    const commandes = await tables.command.read(req.params.id);
+    const commandes = await tables.command.read(userId, id);
 
     // If the commandes is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the commandes in JSON format
@@ -44,4 +54,14 @@ const read = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { create, browse, read };
+
+const getCommandByUser = async (req, res) => {
+  try {
+    const id = req.payload;
+    const [commandsByUser] = await tables.command.getAllCommandByUser(id);
+    res.status(200).json(commandsByUser);
+  } catch (err) {
+    res.status(err);
+  }
+};
+module.exports = { create, browse, read, getCommandByUser };

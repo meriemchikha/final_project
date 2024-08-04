@@ -125,14 +125,14 @@ const readByEmail = async (req, res) => {
 const readById = async (req, res) => {
   try {
     const id = req.payload;
-    const user = await tables.user.getUserById(id);
+    const [user] = await tables.user.getUserById(id);
     if (user.length) {
       res.status(200).json({ message: "isLogged", user: user[0] });
     } else {
-      res.status(401).send("Erreur");
+      res.status(401).json("verfier vos données");
     }
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json(error);
   }
 };
 const logout = async (req, res) => {

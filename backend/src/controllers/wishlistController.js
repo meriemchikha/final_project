@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 const tables = require("../tables");
 
@@ -11,36 +12,51 @@ const getAllProductsInWishlist = async (req, res) => {
     res.status(err);
   }
 };
+// wishlistController.js
+
 const read = async (req, res, next) => {
   try {
-    const id = req.payload;
-    const [result] = await tables.wishlist.readProductByUser(id);
-    if (result == null) {
-      res.sendStatus(404);
-    } else {
-      res.status(200).json(result);
+    const user_id = req.payload; // Le user_id est récupéré depuis le payload du token
+    const [result] = await tables.wishlist.readProductByUser(user_id);
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Aucun produit dans la wishlist" });
     }
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
 };
-const add = async (req, res, next) => {
-  const { quantity, product_id } = req.body;
-  console.info("req.body", req.body);
-  const id = req.payload;
-  console.info("id", id);
+
+// eslint-disable-next-line consistent-return
+const add = async (req, res) => {
   try {
+    const { product_id } = req.body;
+    const user_id = req.payload;
+
+    if (!product_id || !user_id) {
+      return res
+        .status(400)
+        .send({ error: "Product ID and User ID are required." });
+    }
+
+    console.info("req.body", req.body);
+    console.info("user_id", user_id);
+
     const product = await tables.wishlist.addProductInWishlist(
-      quantity,
       product_id,
-      id
+      user_id
     );
-    console.info("product", product);
+    console.info("Product added to wishlist:", product);
+
     res.status(201).json({ product });
   } catch (err) {
-    next(err);
+    console.error("Error in adding product to wishlist:", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
   }
 };
+
 const deleteProductInWishlist = async (req, res) => {
   try {
     const { id } = req.params;

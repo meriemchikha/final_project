@@ -18,11 +18,7 @@ const update = async (req, res, next) => {
     console.info("id", id);
     const { name, description } = req.body;
     console.info("req.body", req.body);
-    const result = await tables.category.updateProductCat(
-      id,
-      name,
-      description
-    );
+    const result = await tables.category.updateCateg(id, name, description);
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -52,12 +48,13 @@ const add = async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+  console.info(req.body);
 };
 
-const deleteProductCat = async (req, res) => {
+const deleteCateg = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await tables.category.deleteProductCat(id);
+    const result = await tables.category.deleteCateg(id);
     if (result.affectedRows) {
       res.status(200).json({
         message:
@@ -70,4 +67,4 @@ const deleteProductCat = async (req, res) => {
     res.status(500).send(error);
   }
 };
-module.exports = { getAllProductCat, update, read, add, deleteProductCat };
+module.exports = { getAllProductCat, update, read, add, deleteCateg };

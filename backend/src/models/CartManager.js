@@ -16,11 +16,9 @@ class AvisManager extends AbstractManager {
   }
 
   async addCart(id) {
+    if (!id) throw new Error("User ID cannot be null");
     const [result] = await this.database.query(
-      `INSERT INTO ${this.table} 
-      (user_id) 
-    VALUES (?)`,
-      // eslint-disable-next-line camelcase
+      `INSERT INTO ${this.table} (user_id) VALUES (?)`,
       [id]
     );
     return result;

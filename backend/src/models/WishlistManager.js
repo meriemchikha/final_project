@@ -1,10 +1,11 @@
+/* eslint-disable camelcase */
 const AbstractManager = require("./AbstractManager");
 
 class WishlistManager extends AbstractManager {
   constructor() {
     // Call the constructor of the parent class (AbstractManager)
     // and pass the table name "Wishlist" as configuration
-    super({ table: "Wishlist" });
+    super({ table: "wishlist" });
   }
 
   async getAllProductsInWishlist() {
@@ -16,33 +17,61 @@ class WishlistManager extends AbstractManager {
   }
 
   async readProductByUser(id) {
-    const [rows] = await this.database.query(
-      `select wishlist.*, product.id AS id_product, 
-     product.name ,
-  product.description,
-  product.price,
-  product.stock,
-  product.category_id,
-  product.sous_category_id,
-   from ${this.table} JOIN product ON wishlist.product_id = product.id where user_id = ?`,
-      [id]
-    );
-    // return rows[0];
-    return [rows];
+    try {
+      const [rows] = await this.database.query(
+        `SELECT 
+        p.id AS product_id,
+        p.name AS product_name,
+        p.price AS product_price,
+        p.img_url AS product_img_url
+      FROM 
+        wishlist w
+      JOIN 
+        product p ON w.product_id = p.id
+      WHERE 
+        w.user_id = ?`, // Assurez-vous que la colonne user_id est utilisée correctement
+        [id]
+      );
+      return rows;
+    } catch (error) {
+      console.error("Error in readProductByUser:", error.message);
+      throw error;
+    }
   }
 
   // eslint-disable-next-line camelcase
-  async addProductInWishlist(quantity, product_id, id) {
-    const [result] = await this.database.query(
-      `INSERT INTO ${this.table} (
-      quantity,
-      product_id,
-      user_id)
-    VALUES (?, ?, ?)`,
-      // eslint-disable-next-line camelcase
-      [quantity, product_id, id]
-    );
-    return result;
+  async addProductInWishlist(product_id, user_id) {
+    try {
+      // Vérifiez d'abord si le produit est déjà dans la wishlist
+      const [existingProduct] = await this.database.query(
+        `SELECT * FROM ${this.table} WHERE product_id = ? AND user_id = ?`,
+        [product_id, user_id]
+      );
+
+      if (existingProduct.length > 0) {
+        console.info("Le produit est déjà dans la wishlist.");
+        return existingProduct[0]; // Retourner l'entrée existante
+      }
+
+      // Ajoutez le produit à la wishlist
+      const [result] = await this.database.query(
+        `INSERT INTO ${this.table} (product_id, user_id) VALUES (?, ?)`,
+        [product_id, user_id]
+      );
+
+      console.info("Query Result:", result);
+
+      // Récupérer le produit ajouté pour le renvoyer
+      const [addedProduct] = await this.database.query(
+        `SELECT * FROM ${this.table} WHERE id = ?`,
+        [result.insertId]
+      );
+
+      return addedProduct[0];
+    } catch (error) {
+      console.error("Error in addProductInWishlist:", error.message);
+      throw error;
+    }
   }
 
   async deleteProductInWishlist(id) {

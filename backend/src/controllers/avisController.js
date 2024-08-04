@@ -3,8 +3,8 @@ const tables = require("../tables");
 
 const create = async (req, res) => {
   try {
-    const { firstname, comment, note } = req.body;
-    const result = await tables.avis.create(firstname, comment, note);
+    const { comment, user_id, product_id } = req.body;
+    const result = await tables.avis.create(comment, user_id, product_id);
     console.info(result.affectedRows);
     if (result.affectedRows) {
       res.status(201).json("created");
@@ -47,9 +47,9 @@ const read = async (req, res, next) => {
 const edit = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstname, comment, note } = req.body;
+    const { comment } = req.body;
 
-    const [result] = await tables.avis.editAvis(id, firstname, comment, note);
+    const [result] = await tables.avis.editAvis(id, comment);
 
     if (result.affectedRows) {
       res.status(200).json({ message: "Comment updated !" });

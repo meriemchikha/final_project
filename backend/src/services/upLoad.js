@@ -3,7 +3,7 @@ const multer = require("multer");
 // l'emplacement de fichier
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "src/uploads");
+    cb(null, "uploads");
   },
   filename(req, file, cb) {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;

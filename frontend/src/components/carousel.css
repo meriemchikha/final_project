@@ -1,0 +1,7 @@
+/* CarouselMakeup.css */
+.carousel-image {
+    width: 100%;
+    height: 400px;
+    /* Ajustez cette valeur en fonction de vos besoins */
+    object-fit: cover;
+}

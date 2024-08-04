@@ -1,49 +1,72 @@
 /* eslint-disable camelcase */
-import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+/* eslint-disable no-shadow */
+/* eslint-disable react/prop-types */
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import ButtonAddProduct from "./ButtonAddProduct";
+import Comment from "../comment/Comment";
 
-export default function Product() {
-  const [details, setDetails] = useState([]);
-  const params = useParams();
+export default function DetailProduct() {
+  const { product_id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    fetch(`http://localhost:3310/api/product/${params.id}`)
-      .then((res) => res.json(console.info(res)))
-      .then((res) => setDetails(res))
-      .catch((error) => console.error(error));
-  }, []);
-  console.info(params.id);
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3310/api/product/${product_id}`
+        );
+        if (!response.ok) {
+          throw new Error("Produit non trouvé");
+        }
+        const data = await response.json();
+        setProduct(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [product_id]);
+
+  console.info(product_id);
+
+  if (loading) {
+    return <p>Chargement...</p>;
+  }
+
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
+  if (!product) {
+    return <p>Produit non trouvé</p>;
+  }
+  console.info(product);
+  console.info(product.img_url);
+
   return (
-    <div className="min-h-screen flex w-full flex-wrap p-4 md:p-8 relative">
-      <h1 className="text-black md:font-sans text-5xl font-semibold decoration-solid w-full mb-16">
-        Details produit
-      </h1>
-
-      <div className="w-full md:w-4/5">
-        <div className="w-full flex flex-wrap">
-          {details.map(({ id, name, img_url, description, price }) => (
-            <div key={id} className="w-full md:w-1/3 md:px-8 mb-20 ">
-              <Link
-                className="inline-block w-full md:h-[700px] relative"
-                to={`/product/${id}`}
-              >
-                <img
-                  src={`http://localhost:3310/${img_url}`}
-                  alt={name}
-                  className="inline-block w-80 object-cover"
-                />
-              </Link>
-              <div className="flex flex-col gap-2">
-                <p className="font-bold">{name}</p>
-
-                <p>{description}</p>
-                <p className="font-semibold text-3xl">{`${price} €`}</p>
-              </div>
-            </div>
-          ))}
+    <>
+      <div className="container  p-4 w-1/3">
+        <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg">
+          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+          <img
+            src={`http://localhost:3310/${product.img_url}`}
+            alt={product.name}
+            className="w-full h-64 object-cover rounded-lg mb-4"
+          />
+          <p className="text-xl font-semibold text-blue-600 mb-4">
+            {product.price} €
+          </p>
+          <p className="text-lg mb-2">{product.description}</p>
         </div>
-        <ButtonAddProduct />
+        <ButtonAddProduct product={product} />
       </div>
-    </div>
+      <Comment />
+    </>
   );
 }

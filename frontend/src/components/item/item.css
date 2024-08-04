@@ -10,14 +10,14 @@
 .item p {
     margin: 6px 0px;
 }
- 
- 
+
  
  .item img {
      width: 530px;
      height: 550px;
      object-fit: cover;
      border-radius: 5px;
+     
  }
  .item div{
     margin-bottom: 20px;

@@ -17,7 +17,7 @@ export default function Item() {
   };
 
   return (
-    <div className="item">
+    <div className="item ">
       <h1 className="text-4xl header">Popular in makeup</h1>
 
       <Slider {...settings}>

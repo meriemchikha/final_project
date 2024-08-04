@@ -43,7 +43,7 @@ class ProductInCartManager extends AbstractManager {
     return [rows];
   }
 
-  async addProductInCart(quantity, size, product_id, cart_id) {
+  async addProductInCart(quantity, product_id, cart_id) {
     const [result] = await this.database.query(
       `INSERT INTO ${this.table} (
      quantity,
@@ -54,24 +54,6 @@ class ProductInCartManager extends AbstractManager {
       [quantity, product_id, cart_id]
     );
     return result;
-  }
-
-  async readTheLastProductByUser(cart_id) {
-    const rows = await this.database.query(
-      `select product_cart.*, product.id AS id_product, 
-     product.name ,
-  product.description,
-  product.price,
-  product.img_url,
-  product.stock,
-  product.category_id,
-  category.name AS category_name,
-  from ${this.table} INNER JOIN product ON 
-  product_cart.product_id = product.id INNER JOIN category ON product.category_id = category.id
-   WHERE cart_id = ? ORDER BY id DESC Limit 1`,
-      [cart_id]
-    );
-    return rows[0];
   }
 
   async deleteProductInCart(cartId) {

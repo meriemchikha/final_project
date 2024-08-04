@@ -8,11 +8,11 @@ class AvisManager extends AbstractManager {
     super({ table: "avis" });
   }
 
-  async create(firstname, comment, note) {
+  async create(comment, user_id, product_id) {
     const [result] = await this.database.query(
-      `insert into ${this.table} (firstname, comment, note) values (?, ?, ?)`,
+      `insert into ${this.table} (comment, user_id, product_id) values (?, ?, ?)`,
       // eslint-disable-next-line camelcase
-      [firstname, comment, note]
+      [comment, user_id, product_id]
     );
     return result;
   }
@@ -36,10 +36,10 @@ class AvisManager extends AbstractManager {
     return rows[0];
   }
 
-  editAvis(id, firstname, comment, note) {
+  editAvis(id, comment) {
     return this.database.query(
-      `UPDATE ${this.table} set firstname = ?, comment = ?, note = ? where id=?`,
-      [firstname, comment, note, id]
+      `UPDATE ${this.table} set comment = ? where id=?`,
+      [comment, id]
     );
   }
 

@@ -23,7 +23,7 @@ class ProductCatManager extends AbstractManager {
     return result;
   }
 
-  async updateProductCat(id, name, description) {
+  async updateCateg(id, name, description) {
     console.info("id", id);
     const [rows] = await this.database.query(
       `UPDATE ${this.table} SET name = ?, description = ? WHERE id = ? 

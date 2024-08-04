@@ -4,10 +4,16 @@ const addCart = async (req, res, next) => {
   const id = req.body.userId;
   console.info("req.body", id);
   try {
+    if (!id) {
+      throw new Error("User ID is required");
+    }
+
     const cart = await tables.cart.addCart(id);
     console.info("cart", cart);
     res.status(201).json({ cart });
   } catch (err) {
+    console.error("Error adding to cart:", err);
+    res.status(500).json({ error: err.message }); // Envoyer un message d'erreur détaillé
     next(err);
   }
 };

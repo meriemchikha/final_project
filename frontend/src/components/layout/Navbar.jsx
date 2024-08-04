@@ -1,20 +1,23 @@
-/* eslint-disable react/button-has-type */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { MdClose } from "react-icons/md";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { PiShoppingCartLight } from "react-icons/pi";
-import { GoPerson } from "react-icons/go";
 import { Link } from "react-router-dom";
-
 import logo1 from "../../assets/logo1.png";
 import SearchBar from "../SearchBar";
 import CategoryList from "./CategoryList";
+import { useCart } from "../../context/cartContext";
+import { UserContext } from "../../context/userContext"; // Importation du contexte utilisateur
+import Login from "../Login"; // Importation du composant Login
 import "./navbar.css";
 
 export default function Navbar() {
   const [dropDownVisible, setDropDownVisible] = useState(false);
   const [categoryListVisible, setCategoryListVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
+  const { cartCount } = useCart();
+  // eslint-disable-next-line no-unused-vars
+  const { user } = useContext(UserContext); // Récupérer l'utilisateur du contexte
 
   // eslint-disable-next-line no-unused-vars
   const [menuItems, setMenuItems] = useState([
@@ -68,14 +71,12 @@ export default function Navbar() {
             )}
             <SearchBar />
             <div className="nav-login-cart">
-              <Link to="/inscrire">
-                <GoPerson size={30} />
-              </Link>
               <Link to="/cart">
                 <PiShoppingCartLight size={30} />
               </Link>
-              <div className="nav-cart-count">0</div>
+              <div className="nav-cart-count">{cartCount}</div>
             </div>
+            <Login /> {/* mon composant Login */}
           </span>
         </div>
         <div className="lg:w-full mx-auto h-full lg:flex hidden justify-center gap-16 items-center pt-4">

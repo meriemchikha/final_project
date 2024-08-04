@@ -8,11 +8,11 @@ class CommandManager extends AbstractManager {
     super({ table: "command" });
   }
 
-  async create(payment, statut) {
+  async create(payment, statut, cart_id, payment_id) {
     const [result] = await this.database.query(
-      `insert into ${this.table} (payment, statut) values (?, ?)`,
+      `insert into ${this.table} (payment, statut, cart_id, payment_id) values (?, ?, ?, ?)`,
       // eslint-disable-next-line camelcase
-      [payment, statut]
+      [payment, statut, cart_id, payment_id]
     );
     return result;
   }
@@ -25,15 +25,23 @@ class CommandManager extends AbstractManager {
     return rows;
   }
 
-  async read(id) {
+  async read(id, userId) {
     // Execute the SQL SELECT query to retrieve a specific commandes by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
-      [id]
+      `select * from ${this.table} where  id = ? and user_id = ?`,
+      [id, userId]
     );
 
     // Return the first row of the result, which represents the commandes
     return rows[0];
+  }
+
+  async getAllCommandByUser(id) {
+    const [rows] = await this.database.query(
+      `select * from ${this.table} where user_id = ?`,
+      [id]
+    );
+    return [rows];
   }
 }
 module.exports = CommandManager;

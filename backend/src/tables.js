@@ -5,6 +5,7 @@
 // Import the manager modules responsible for handling data operations on the tables
 const UserManager = require("./models/UserManager");
 const categoryManager = require("./models/CategoryManager");
+const SousCategoryManager = require("./models/SousCategoryManager");
 const ProduitManager = require("./models/ProduitManager");
 const CommandManager = require("./models/CommandManager");
 const AvisManager = require("./models/AvisManager");
@@ -12,12 +13,13 @@ const WishlistManager = require("./models/WishlistManager");
 const NewsletterManager = require("./models/NewsletterManager");
 const CartManager = require("./models/CartManager");
 const DetailOrderManager = require("./models/DetailOrderManager");
-const ProductCatManager = require("./models/CategoryManager");
+const ProductCartManager = require("./models/ProductCartManager");
 const PaymentManager = require("./models/PaymentManager");
 
 const managers = [
   UserManager,
   categoryManager,
+  SousCategoryManager,
   ProduitManager,
   CommandManager,
   AvisManager,
@@ -25,7 +27,7 @@ const managers = [
   NewsletterManager,
   CartManager,
   DetailOrderManager,
-  ProductCatManager,
+  ProductCartManager,
   PaymentManager,
 ];
 

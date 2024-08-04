@@ -8,8 +8,8 @@ export default function CategoryList({ categories }) {
     <div className="category-list absolute bg-white shadow-lg p-4">
       <ul>
         {categories.map((category) => (
-          <li key={category.name} className="hover:text-main p-2">
-            <Link to={category.path}>{category.name}</Link>
+          <li key={category.id} className="hover:text-main p-2">
+            <Link to={`/category/${category.path}`}>{category.name}</Link>
           </li>
         ))}
       </ul>

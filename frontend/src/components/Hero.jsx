@@ -8,7 +8,7 @@ export default function Hero() {
   // eslint-disable-next-line react/no-unstable-nested-components, react/prop-types
 
   return (
-    <div className=" min-h-[55vh]">
+    <div className=" min-h-[65vh]">
       <div className=" bg-[url('/src/assets/bg2.jpg')] bg-no-repeat lg:absolute bg-cover bg-center w-full top-0 h-[830px]">
         <div className=" max-w-[1200px] mx-auto xl:px-0 px-4 lg:mt-72 pt-8 lg:flex items-center">
           <div

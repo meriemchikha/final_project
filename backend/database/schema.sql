@@ -46,14 +46,14 @@ CREATE TABLE product (
 CREATE TABLE avis (
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   comment VARCHAR(255) NOT NULL,
-  note INT,
-  product_id INT,
+  user_id INT,
+   product_id INT,
+   FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
 );
 
 CREATE TABLE wishlist (
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  quantity INT NOT NULL,
   product_id INT,
   user_id INT,
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
