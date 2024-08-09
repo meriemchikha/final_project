@@ -44,6 +44,12 @@ export default function LoginForm() {
 
   return (
     <main className="min-h-[calc(100vh-200px)]  ">
+      <div className=" text-center">
+        <h1 className=" text-2xl text-center py-10">Bienvenue chez Beauty </h1>
+        <span className=" text-xl">
+          Vous avez déjà un compte ? Ravi de vous revoir !
+        </span>
+      </div>
       <div className="flex flex-col  items-center py-24">
         <form
           className="space-y-4 p-4 items-center  flex flex-col justify-center shadow-2xl bg-white w-1/2 "

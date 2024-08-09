@@ -11,7 +11,7 @@ import { CartProvider } from "./context/cartContext"; // Importez votre CartProv
 import InscriptionPage from "./pages/InscriptionPage";
 import LoginPage from "./pages/LoginPage";
 import CategoryPage from "./pages/categoryPage";
-import Profile from "./components/Profile";
+import Profile from "./components/profile/Profile";
 import Cart from "./pages/CartPage";
 import Product from "./components/productSousCategory/Product";
 import DetailProduct from "./components/product/DetailProduct";
@@ -20,6 +20,7 @@ import SousCategoryPage from "./pages/sousCategoryPage";
 import WishlistProductPage from "./pages/WishlistProductPage";
 import Comment from "./components/comment/Comment";
 import Payment from "./components/payment/Payment";
+import Newsletter from "./components/newsletter/Newsletter";
 
 function AppLayout() {
   return (
@@ -27,6 +28,7 @@ function AppLayout() {
       <CartProvider>
         <Layout>
           <Outlet />
+          <Newsletter />
         </Layout>
       </CartProvider>
     </UserProvider>

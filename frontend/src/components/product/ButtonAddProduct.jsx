@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { useCart } from "../../context/cartContext";
 
-export default function ButtonAddProduct({ product, userId }) {
+export default function ButtonAddProduct({ product, cartId }) {
   const { addToCart } = useCart();
   const [notification, setNotification] = useState("");
 
   const handleAddToCart = () => {
-    addToCart(product, userId);
+    addToCart(product, cartId);
     setNotification("Votre Produit ajouté au panier avec succès !");
     setTimeout(() => {
       setNotification("");

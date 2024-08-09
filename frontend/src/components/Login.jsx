@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { IoMdLogOut } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPerson } from "react-icons/go";
+import { BsPersonCheckFill } from "react-icons/bs";
 import { UserContext } from "../context/userContext";
 import ModalLogOut from "../modal/ModalLogOut";
 
@@ -73,13 +74,15 @@ export default function Login() {
             />
           </div>
           <div className="gap-8 items-center hidden md:flex text-lg">
-            <Link to="/Profile">Mon profil</Link>
+            <Link to="/Profile">
+              <BsPersonCheckFill size={30} />
+            </Link>
             <button
               className="bg-transparent border-none flex gap-8 items-center"
               type="button"
               onClick={() => setShowModal(true)}
             >
-              <IoMdLogOut />
+              <IoMdLogOut size={27} />
             </button>
           </div>
         </>

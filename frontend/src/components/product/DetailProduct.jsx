@@ -4,13 +4,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ButtonAddProduct from "./ButtonAddProduct";
-import Comment from "../comment/Comment";
+import CommentSection from "../comment/CommentSection";
+import { useCart } from "../../context/cartContext"; // Importer le contexte de panier
 
 export default function DetailProduct() {
   const { product_id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { cart } = useCart(); // Utiliser le contexte pour obtenir le panier
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,7 +35,8 @@ export default function DetailProduct() {
     fetchProduct();
   }, [product_id]);
 
-  console.info(product_id);
+  // Assurez-vous que vous avez un panier valide
+  const cartId = cart.length > 0 ? cart[0].id : null; // Exemple, utiliser la logique appropriée pour obtenir cartId
 
   if (loading) {
     return <p>Chargement...</p>;
@@ -46,8 +49,6 @@ export default function DetailProduct() {
   if (!product) {
     return <p>Produit non trouvé</p>;
   }
-  console.info(product);
-  console.info(product.img_url);
 
   return (
     <>
@@ -57,16 +58,18 @@ export default function DetailProduct() {
           <img
             src={`http://localhost:3310/${product.img_url}`}
             alt={product.name}
-            className="w-full h-64 object-cover rounded-lg mb-4"
+            className="w-50 h-64 object-cover rounded-lg mb-4"
           />
           <p className="text-xl font-semibold text-blue-600 mb-4">
             {product.price} €
           </p>
           <p className="text-lg mb-2">{product.description}</p>
         </div>
-        <ButtonAddProduct product={product} />
+        {/* Passer cartId si disponible */}
+        <ButtonAddProduct product={product} cartId={cartId} />
       </div>
-      <Comment />
+
+      <CommentSection productId={product.id} />
     </>
   );
 }

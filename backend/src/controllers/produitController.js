@@ -7,17 +7,20 @@ const create = async (req, res) => {
   try {
     const { name, description, price, stock, sous_category_id } = req.body;
 
-    // Validation des champs requis
-    if (!name || !description || !price || !stock || !sous_category_id) {
-      return res.status(400).send("Tous les champs sont requis.");
-    }
+    // // Validation des champs requis
+    // if (!name || !description || !price || !stock || !sous_category_id) {
+    //   return res.status(400).send("Tous les champs sont requis.");
+    // }
 
-    // Vérification si le fichier est présent
-    if (!req.file || !req.file.path) {
-      return res.status(400).send("L'image est requise.");
-    }
+    // // Vérification si le fichier est présent
+    // if (!req.file || !req.file.path) {
+    //   return res.status(400).send("L'image est requise.");
+    // }
 
-    const img_url = req.file.path;
+    let img_url = "";
+    if (req.file) {
+      img_url = req.file.path;
+    }
 
     const result = await tables.product.create(
       name,
@@ -29,17 +32,17 @@ const create = async (req, res) => {
     );
 
     if (result.affectedRows) {
-      res.status(201).send("created");
+      res.status(201).json("created");
     } else {
       fs.unlinkSync(req.file.path);
-      res.status(401).send("Erreur lors de l'enregistrement");
+      res.status(401).json("erreur lors de l'enregistrement");
     }
   } catch (error) {
-    // Suppression du fichier en cas d'erreur
-    if (req.file && req.file.path) {
+    if (req.file) {
       fs.unlinkSync(req.file.path);
     }
-    res.status(500).send(error.message);
+
+    res.status(500).send(error);
   }
 };
 // The B of BREAD - Browse (Read All) operation
@@ -135,6 +138,19 @@ const getAllProductInSousCategory = async (req, res) => {
     });
   }
 };
+const getAllCommentsByProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [avis] = await tables.product.getAllCommentsByProduct(id);
+    if (avis.length > 0) {
+      res.json(avis);
+    } else {
+      res.status(401).send("Ce produit n'a pas de commentaires pour l'instant");
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
 
 module.exports = {
   create,
@@ -143,4 +159,5 @@ module.exports = {
   deleteProduit,
   editOnlyPicture,
   getAllProductInSousCategory,
+  getAllCommentsByProduct,
 };

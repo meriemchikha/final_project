@@ -4,15 +4,18 @@ const tables = require("../tables");
 
 const getAllProductsInWishlist = async (req, res) => {
   try {
-    const [allProductsInWishlist] =
+    // eslint-disable-next-line no-undef
+
+    const allProductsInWishlist =
       await tables.wishlist.getAllProductsInWishlist();
+
     console.info("allProductsInWishlist ", allProductsInWishlist);
     res.json(allProductsInWishlist);
   } catch (err) {
-    res.status(err);
+    console.error("Error fetching products in wishlist: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-// wishlistController.js
 
 const read = async (req, res, next) => {
   try {
@@ -44,13 +47,13 @@ const add = async (req, res) => {
     console.info("req.body", req.body);
     console.info("user_id", user_id);
 
-    const product = await tables.wishlist.addProductInWishlist(
+    const productInWishlist = await tables.wishlist.addProductInWishlist(
       product_id,
       user_id
     );
-    console.info("Product added to wishlist:", product);
+    console.info("Product added to wishlist:", productInWishlist);
 
-    res.status(201).json({ product });
+    res.status(201).json({ productInWishlist });
   } catch (err) {
     console.error("Error in adding product to wishlist:", err.message);
     res.status(500).send({ error: "Internal Server Error" });

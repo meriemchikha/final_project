@@ -20,7 +20,7 @@ export default function QuantityInCart({ product, setCart }) {
   }));
 
   return (
-    <div className="flex md:pb-6">
+    <div className="flex md:pb-6 gap-2">
       <p className="text-[1.1rem] text-slate-600">Quantité</p>
       <select
         name="quantity"

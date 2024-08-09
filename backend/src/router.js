@@ -72,12 +72,15 @@ router.patch(
   upLoad,
   produitController.editOnlyPicture
 );
-
+router.get("/product/:id/comments", produitController.getAllCommentsByProduct);
 // Routes ProductInCart
 router.get("/all-product-cart", productCartController.getAllProductsInCart);
 router.get("/product-in-cart/:cart_id", productCartController.read);
 router.post("/product-in-cart", productCartController.add);
-router.delete("/product/:cart_id", productCartController.deleteProductInCart);
+router.delete(
+  "/product/:product_id/:cart_id",
+  productCartController.deleteProductInCart
+);
 
 // Routes Commandes
 router.post("/command", commandController.create);
@@ -102,7 +105,12 @@ router.post("/cart", verifyToken, cartController.addCart);
 
 // Routes Wishlist
 // router.get("/wishlist", wishlistController.getAllProductsInWishlist);
-router.get("/wishlist", verifyToken, wishlistController.read);
+router.get(
+  "/all-productsInWishlist",
+  verifyToken,
+  wishlistController.getAllProductsInWishlist
+);
+router.get("/wishlist/:user_id", verifyToken, wishlistController.read);
 router.post("/wishlist", verifyToken, wishlistController.add);
 router.delete("/wishlist/:id", wishlistController.deleteProductInWishlist);
 

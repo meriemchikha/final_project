@@ -74,5 +74,30 @@ class ProduitManager extends AbstractManager {
       [img_url]
     );
   }
+
+  getAllCommentsByProduct(id) {
+    return this.database.query(
+      `SELECT 
+          p.id AS productId, 
+          p.name AS productName, 
+          a.id AS avisId,  
+          a.comment AS avisComment,
+          u.firstname AS firstnameUser,
+          DATE_FORMAT(a.created_at, '%d/%m/%Y à %H:%i:%s') AS avisDate 
+      FROM 
+          product AS p 
+      LEFT JOIN 
+          avis AS a
+      ON 
+          p.id = a.product_id 
+      LEFT JOIN 
+          user AS u
+      ON 
+          a.user_id = u.id
+      WHERE 
+          p.id = ?;`,
+      [id]
+    );
+  }
 }
 module.exports = ProduitManager;

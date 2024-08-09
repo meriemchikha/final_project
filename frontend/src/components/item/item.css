@@ -22,3 +22,12 @@
  .item div{
     margin-bottom: 20px;
  }
+.slider-item {
+    padding: 0 10px;
+    /* Ajoute un espace de 10px à gauche et à droite de chaque élément */
+}
+
+.image-fixed {
+    width: 100%;
+    height: auto;
+}

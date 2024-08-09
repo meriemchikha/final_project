@@ -15,13 +15,34 @@ class AvisManager extends AbstractManager {
     return rows;
   }
 
-  async addCart(id) {
-    if (!id) throw new Error("User ID cannot be null");
+  async addCart(userId) {
+    if (!userId) {
+      throw new Error("User ID cannot be null");
+    }
+
+    // Vérifie si un panier existe déjà pour cet utilisateur
+    const [existingCart] = await this.database.query(
+      `SELECT id FROM ${this.table} WHERE user_id = ?`,
+      [userId]
+    );
+
+    if (existingCart.length > 0) {
+      return existingCart[0]; // Renvoie le panier existant si trouvé
+    }
+
+    // Insère un nouveau panier si aucun n'existe
     const [result] = await this.database.query(
       `INSERT INTO ${this.table} (user_id) VALUES (?)`,
-      [id]
+      [userId]
     );
-    return result;
+
+    // Récupère le nouveau panier inséré
+    const [newCart] = await this.database.query(
+      `SELECT id, user_id FROM ${this.table} WHERE id = ?`,
+      [result.insertId]
+    );
+
+    return newCart[0];
   }
 }
 module.exports = AvisManager;

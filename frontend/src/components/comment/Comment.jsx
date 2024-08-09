@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { useState, useContext } from "react";
 import { UserContext } from "../../context/userContext";
@@ -55,7 +56,9 @@ export default function Comment({ productId }) {
       });
   };
   console.info(user);
-
+  console.info("User context:", user);
+  console.info("Product ID:", productId);
+  console.info("User ID:", user?.user?.id);
   return (
     <div>
       {user?.message !== "isLogged" ||

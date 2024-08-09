@@ -1,19 +1,24 @@
+/* eslint-disable consistent-return */
 const tables = require("../tables");
 
 const addCart = async (req, res, next) => {
-  const id = req.body.userId;
-  console.info("req.body", id);
+  const { userId } = req.body;
+
+  console.info("Received userId in request body:", userId);
+
   try {
-    if (!id) {
-      throw new Error("User ID is required");
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" }); // Réponse appropriée pour une requête invalide
     }
 
-    const cart = await tables.cart.addCart(id);
-    console.info("cart", cart);
-    res.status(201).json({ cart });
+    const cart = await tables.cart.addCart(userId); // Utilise la méthode du manager
+    console.info("New cart entry:", cart);
+
+    res.status(201).json({ cart }); // Réponse JSON avec les données du panier ajoutées
   } catch (err) {
     console.error("Error adding to cart:", err);
-    res.status(500).json({ error: err.message }); // Envoyer un message d'erreur détaillé
+
+    res.status(500).json({ error: `Internal Server Error: ${err.message}` });
     next(err);
   }
 };

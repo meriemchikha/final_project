@@ -1,13 +1,15 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/button-has-type */
 import React, { useContext, useState, useEffect } from "react";
-import { UserContext } from "../context/userContext";
-import "./profile.css"; // Ensure this file contains your Tailwind CSS imports
+import { UserContext } from "../../context/userContext";
+import "./profile.css";
 // eslint-disable-next-line import/order
 import { useNavigate } from "react-router-dom";
-import ModalUpdate from "../modal/ModalUpdate";
+import ModalUpdate from "../../modal/ModalUpdate";
 
-export default function Profile() {
+export default function UpdateProfile({ setShowUpdateForm }) {
+  // Accepter la prop setShowUpdateForm
   // eslint-disable-next-line no-unused-vars
   const { user, token } = useContext(UserContext); // Assuming updateUser updates the user state
   const navigate = useNavigate();
@@ -53,6 +55,7 @@ export default function Profile() {
       .then((res) => res.json())
       .then((res) => {
         console.info(res);
+        setShowUpdateForm(false); // Masquer le formulaire après la soumission réussie
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -79,12 +82,20 @@ export default function Profile() {
       window.location.reload();
     }, 5000);
   };
+
+  const handleCancel = () => {
+    setShowUpdateForm(false); // Masquer le formulaire lors de l'annulation
+  };
+
   console.info("user======>", user);
+  console.info("id de user======>", user?.user?.id);
+  console.info(" firstname======>", user?.user?.firstname);
+
   return (
     <div className="main flex h-screen flex-col bg-gray-100 p-8">
       <div className="flex justify-between items-center p-4 bg-white shadow-md rounded-md mb-8">
         <h1 className="text-2xl font-bold">Modifier mon Profil</h1>
-        <h1 className="text-xl font-semibold text-gray-800   text-center">
+        <h1 className="text-xl font-semibold text-gray-800 text-center">
           {user?.user?.lastname} {user?.user?.firstname}
         </h1>
       </div>
@@ -141,9 +152,15 @@ export default function Profile() {
           <button
             type="submit"
             onClick={handleSubmit}
-            className=" border-2 bg-slate-400 w-28 h-8 rounded-lg hover:bg-slate-300"
+            className="border-2 bg-slate-400 w-28 h-8 rounded-lg hover:bg-slate-300"
           >
             Sauvegarder
+          </button>
+          <button
+            onClick={handleCancel} // Bouton pour annuler les modifications
+            className="border-2 bg-slate-400 w-28 h-8 rounded-lg hover:bg-slate-300"
+          >
+            Annuler
           </button>
         </div>
         {show && <ModalUpdate message={message} show={show} />}

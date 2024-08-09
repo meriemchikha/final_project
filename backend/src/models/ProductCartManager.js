@@ -56,10 +56,11 @@ class ProductInCartManager extends AbstractManager {
     return result;
   }
 
-  async deleteProductInCart(cartId) {
-    return this.database.query("DELETE FROM product_cart WHERE cart_id = ?", [
-      cartId,
-    ]);
+  async deleteProductInCart(cartId, productId) {
+    return this.database.query(
+      "DELETE FROM product_cart WHERE cart_id = ? && product_id = ?",
+      [cartId, productId]
+    );
   }
 }
 

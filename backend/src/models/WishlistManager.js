@@ -9,10 +9,10 @@ class WishlistManager extends AbstractManager {
   }
 
   async getAllProductsInWishlist() {
-    // Execute the SQL SELECT query to retrieve all Wishlist from the "Wishlist" table
-    const [rows] = await this.database.query(`select * from ${this.table}`);
+    // Exécutez la requête SQL SELECT pour récupérer tous les produits de la table "wishlist"
+    const [rows] = await this.database.query(`SELECT * FROM ${this.table}`);
 
-    // Return the array of users
+    // Retournez le tableau de produits
     return rows;
   }
 

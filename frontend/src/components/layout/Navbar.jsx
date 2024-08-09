@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { PiShoppingCartLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import { AiOutlineHeart } from "react-icons/ai";
 import logo1 from "../../assets/logo1.png";
 import SearchBar from "../SearchBar";
 import CategoryList from "./CategoryList";
@@ -75,6 +76,11 @@ export default function Navbar() {
                 <PiShoppingCartLight size={30} />
               </Link>
               <div className="nav-cart-count">{cartCount}</div>
+              <Link to="/wishlist">
+                <div>
+                  <AiOutlineHeart size={30} />
+                </div>
+              </Link>
             </div>
             <Login /> {/* mon composant Login */}
           </span>

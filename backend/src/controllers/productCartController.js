@@ -44,7 +44,11 @@ const add = async (req, res, next) => {
 const deleteProductInCart = async (req, res) => {
   try {
     const { cart_id } = req.params;
-    const [result] = await tables.product_cart.deleteProductInCart(cart_id);
+    const { product_id } = req.payload;
+    const [result] = await tables.product_cart.deleteProductInCart(
+      cart_id,
+      product_id
+    );
     if (result.affectedRows) {
       res.status(200).json({
         message: " Produit supprimée !",

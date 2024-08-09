@@ -15,22 +15,28 @@ export function CartProvider({ children }) {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [cartId, setCartId] = useState(() => {
+    // Récupérer l'id du panier depuis le localStorage
+    return localStorage.getItem("cartId");
+  });
 
   useEffect(() => {
     if (!user) {
       // Réinitialiser le panier si l'utilisateur se déconnecte
       setCart([]);
+      setCartId(null);
     }
   }, [user]);
 
-  // Sauvegarder le panier dans le localStorage à chaque changement
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    if (cartId) {
+      localStorage.setItem("cartId", cartId);
+    }
+  }, [cart, cartId]);
 
-  const addToCart = async (product, userId) => {
+  const createCart = async () => {
     try {
-      // En supposant que la réponse inclut les données du panier mises à jour
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
         {
@@ -38,8 +44,38 @@ export function CartProvider({ children }) {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ userId: user.id }), // Envoyer l'ID utilisateur pour créer un panier
+        }
+      );
+      const data = await response.json();
+      setCartId(data.id); // Stocker l'ID du panier
+      localStorage.setItem("cartId", data.id);
+    } catch (error) {
+      console.error("Erreur lors de la création du panier", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user && !cartId) {
+      // Créer un panier lorsque l'utilisateur se connecte
+      createCart();
+    }
+  }, [user]);
+
+  const addToCart = async (product) => {
+    if (!cartId) {
+      await createCart();
+    }
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/product-in-cart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
-            userId,
+            cartId,
             productId: product.id,
             quantity: 1, // Quantité par défaut
           }),
@@ -47,7 +83,6 @@ export function CartProvider({ children }) {
       );
 
       const updatedProduct = await response.json();
-
       setCart((prevCart) => {
         const existingProduct = prevCart.find((p) => p.id === product.id);
         if (existingProduct) {
@@ -62,38 +97,51 @@ export function CartProvider({ children }) {
     }
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prevCart) =>
-      prevCart.filter((product) => product.id !== productId)
-    );
-    // Vous devriez également supprimer l'article du backend
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cart/${productId}`, {
-      method: "DELETE",
-    }).catch((error) =>
-      console.error("Erreur lors de la suppression du panier", error)
-    );
+  const removeFromCart = async (productId) => {
+    if (!cartId) return; // Pas de panier, pas de suppression
+    try {
+      await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/product/${productId}/${cartId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      setCart((prevCart) =>
+        prevCart.filter((product) => product.id !== productId)
+      );
+    } catch (error) {
+      console.error("Erreur lors de la suppression du panier", error);
+    }
   };
 
-  const updateProductQuantity = (productId, quantity) => {
+  const updateProductQuantity = async (productId, quantity) => {
     setCart((prevCart) =>
       prevCart.map((product) =>
         product.id === productId ? { ...product, quantity } : product
       )
     );
 
-    // Mettre à jour la quantité dans le backend
-    // fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cart/${productId}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ quantity }),
-    // }).catch((error) =>
-    //   console.error(
-    //     "Erreur lors de la mise à jour de la quantité du panier",
-    //     error
-    //   )
-    // );
+    if (cartId) {
+      try {
+        await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/cart/${productId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ quantity }),
+          }
+        );
+      } catch (error) {
+        console.error(
+          "Erreur lors de la mise à jour de la quantité du panier",
+          error
+        );
+      }
+    }
   };
 
   const cartCount = cart.reduce(
@@ -107,9 +155,10 @@ export function CartProvider({ children }) {
         cart,
         setCart,
         addToCart,
-        cartCount: user.user ? cartCount : 0, // Réinitialiser cartCount à 0 si l'utilisateur n'est pas connecté
+        cartCount: user.user ? cartCount : 0,
         removeFromCart,
         updateProductQuantity,
+        cartId, // Ajouter cartId au contexte
       }}
     >
       {children}

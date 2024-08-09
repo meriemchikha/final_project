@@ -14,15 +14,17 @@ export default function Item() {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000, // Vitesse de défilement automatique en millisecondes
   };
 
   return (
-    <div className="item ">
+    <div className="item">
       <h1 className="text-4xl header">Popular in makeup</h1>
 
       <Slider {...settings}>
         {data.map(({ id, image, Description }) => (
-          <div key={id}>
+          <div key={id} className="slider-item">
             <div className="w-full h-full">
               <img src={image} alt={Description} className="image-fixed" />
             </div>
