@@ -71,9 +71,9 @@ export default function AddToWishlist({ productId }) {
       }
     >
       {favoriteProducts.has(productId) ? (
-        <AiFillHeart className="text-red-500" />
+        <AiFillHeart className="text-red-500 " size={24} />
       ) : (
-        <AiOutlineHeart className="text-gray-500" />
+        <AiOutlineHeart className="text-gray-500" size={24} />
       )}
     </button>
   );

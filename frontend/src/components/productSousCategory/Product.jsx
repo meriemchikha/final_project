@@ -4,8 +4,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AddToWishlist from "../wishlist/AddToWishlist";
+import ButtonAddProduct from "../product/ButtonAddProduct";
+import { useCart } from "../../context/cartContext";
 
 export default function Product({ products = [] }) {
+  const { cart } = useCart();
   return (
     <div>
       <h3 className="text-2xl mb-4">Produits disponibles</h3>
@@ -30,7 +33,13 @@ export default function Product({ products = [] }) {
                   <p className="font-semibold text-xl text-blue-600">{`${price} €`}</p>
                 </div>
               </Link>
-              <AddToWishlist productId={id} />
+              <div>
+                <AddToWishlist productId={id} />
+                <ButtonAddProduct
+                  product={{ id, product_name, img_url, price }}
+                  cart={cart}
+                />
+              </div>
             </div>
           ))}
         </div>

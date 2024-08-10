@@ -9,15 +9,39 @@ export default function WishlistProductPage() {
   const [wishlistProducts, setWishlistProducts] = useState([]);
 
   useEffect(() => {
+    // Fetch IDs des produits dans la wishlist
     fetch(`http://localhost:3310/api/all-productsInWishlist`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.info("Données de la wishlist :", data);
-        setWishlistProducts(Array.isArray(data) ? data : [data]);
+      .then((wishlistItems) => {
+        console.info("Données de la wishlist :", wishlistItems);
+        if (Array.isArray(wishlistItems)) {
+          // Récupérer les détails de chaque produit
+          const productRequests = wishlistItems.map(({ product_id }) =>
+            fetch(`http://localhost:3310/api/product/${product_id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }).then((response) => response.json())
+          );
+
+          // Attendre que toutes les requêtes soient terminées
+          Promise.all(productRequests)
+            .then((products) => {
+              setWishlistProducts(products);
+            })
+            .catch((error) => {
+              console.error(
+                "Erreur lors de la récupération des détails des produits :",
+                error
+              );
+            });
+        } else {
+          console.error("Données de wishlist non conformes");
+        }
       });
   }, [token]);
 

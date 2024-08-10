@@ -13,7 +13,7 @@ export function UserProvider({ children }) {
   );
   console.info("token from userProvider", token);
   const [user, setUser] = useState({});
-  console.info("id de User:", user.id);
+  console.info("id de User:", user?.user?.id);
   console.info("Token:", token);
 
   useEffect(() => {

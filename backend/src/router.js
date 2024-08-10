@@ -112,7 +112,10 @@ router.get(
 );
 router.get("/wishlist/:user_id", verifyToken, wishlistController.read);
 router.post("/wishlist", verifyToken, wishlistController.add);
-router.delete("/wishlist/:id", wishlistController.deleteProductInWishlist);
+router.delete(
+  "/wishlist/:product_id",
+  wishlistController.deleteProductInWishlist
+);
 
 // Route newsletter
 router.get("/all-newsletter", newsletterController.getAllNewsletter);

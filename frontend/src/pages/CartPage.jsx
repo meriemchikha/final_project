@@ -101,6 +101,10 @@ export default function CartPage() {
                   ))}
                 </div>
               )}
+              <div className="flex w-full gap-8 py-4">
+                <p className="text-slate-950 text-lg">Total :</p>
+                <p>{totalCart.toFixed(2)} €</p>
+              </div>
             </div>
           ) : null}
         </div>

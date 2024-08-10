@@ -67,7 +67,7 @@ export default function SousCategoryPage() {
   return (
     <>
       <CarouseMakeup />
-      <div className="container mx-auto py-8 px-4 h-[850px]">
+      <div className="container mx-auto py-8 px-4 ">
         <SousCategory
           sousCategories={sousCategories}
           handleSousCategoryClick={handleSousCategoryClick}

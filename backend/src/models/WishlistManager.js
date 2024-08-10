@@ -74,8 +74,11 @@ class WishlistManager extends AbstractManager {
     }
   }
 
-  async deleteProductInWishlist(id) {
-    return this.database.query(`delete from ${this.table} where id = ?`, [id]);
+  async deleteProductInWishlist(product_id) {
+    return this.database.query(
+      `delete from ${this.table} where product_id = ?`,
+      [product_id]
+    );
   }
 }
 module.exports = WishlistManager;

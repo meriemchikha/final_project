@@ -62,9 +62,9 @@ const add = async (req, res) => {
 
 const deleteProductInWishlist = async (req, res) => {
   try {
-    const { id } = req.params;
-    console.info("id", id);
-    const [result] = await tables.wishlist.deleteProductInWishlist(id);
+    const { product_id } = req.params;
+    console.info("id de produit in wishlist", product_id);
+    const [result] = await tables.wishlist.deleteProductInWishlist(product_id);
     console.info("result", result);
     if (result.affectedRows) {
       res.status(200).json({
