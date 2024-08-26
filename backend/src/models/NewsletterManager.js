@@ -5,6 +5,17 @@ class NewsletterManager extends AbstractManager {
     super({ table: "newsletter" });
   }
 
+  async addNewsletter(email) {
+    const [result] = await this.database.query(
+      `INSERT INTO ${this.table} (
+     email)
+    VALUES (?)`,
+      // eslint-disable-next-line camelcase
+      [email]
+    );
+    return result;
+  }
+
   async getAllNewsletter() {
     const [result] = await this.database.query(`SELECT *
   FROM ${this.table} ;`);

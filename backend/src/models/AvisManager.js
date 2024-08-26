@@ -25,11 +25,11 @@ class AvisManager extends AbstractManager {
     return rows;
   }
 
-  async read(id) {
+  async read(product_id) {
     // Execute the SQL SELECT query to retrieve a specific Avis by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
-      [id]
+      `select * from ${this.table} where product_id = ?`,
+      [product_id]
     );
 
     // Return the first row of the result, which represents the Avis

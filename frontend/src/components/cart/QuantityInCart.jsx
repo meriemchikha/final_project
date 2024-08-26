@@ -1,18 +1,14 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 import React from "react";
+import { useCart } from "../../context/cartContext"; // Importer le hook useCart
 
-export default function QuantityInCart({ product, setCart }) {
-  const handleQuantityChange = (productId, newQuantity) => {
-    setCart((prevCart) => {
-      const updatedCart = prevCart.map((item) => {
-        if (item.id === productId) {
-          return { ...item, quantity: parseInt(newQuantity, 10) }; // Assurez-vous de convertir en entier
-        }
-        return item;
-      });
-      return updatedCart;
-    });
+export default function QuantityInCart({ product }) {
+  const { updateProductQuantity } = useCart(); // Accéder à updateProductQuantity depuis le CartContext
+
+  const handleQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value, 10); // Convertir en entier
+    updateProductQuantity(product.id, newQuantity); // Appeler la fonction du contexte pour mettre à jour la quantité
   };
 
   const quantities = Array.from({ length: 10 }, (_, i) => ({
@@ -20,13 +16,13 @@ export default function QuantityInCart({ product, setCart }) {
   }));
 
   return (
-    <div className="flex md:pb-6 gap-2">
-      <p className="text-[1.1rem] text-slate-600">Quantité</p>
+    <div className="flex md:pb-6 gap-2 border-2">
+      {/* <p className="text-[1.1rem] text-slate-600">Quantité</p> */}
       <select
         name="quantity"
         id="quantity"
         value={product.quantity}
-        onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+        onChange={handleQuantityChange}
       >
         {quantities.map((quantity) => (
           <option key={quantity.quantity} value={quantity.quantity}>

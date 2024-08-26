@@ -12,7 +12,7 @@ export default function CommentList({
   const [comments, setComments] = useState([]);
 
   const fetchComments = () => {
-    fetch(`http://localhost:3310/api/product/${productId}/comments`)
+    fetch(`http://localhost:3310/api/comments/${productId}`)
       .then((res) => res.json())
       .then((data) => setComments(data))
       .catch((error) => console.error("Failed to fetch comments:", error));

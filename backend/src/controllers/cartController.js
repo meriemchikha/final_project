@@ -23,16 +23,25 @@ const addCart = async (req, res, next) => {
   }
 };
 
+const getCartByUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [cartByUser] = await tables.cart.getCartByUser(id);
+    res.status(200).json(cartByUser);
+  } catch (err) {
+    res.status(err);
+  }
+};
 const browse = async (req, res, next) => {
   try {
-    // Fetch all Avis from the database
+    // Fetch all cart from the database
     const panier = await tables.cart.readAll();
 
-    // Respond with the Avis in JSON format
+    // Respond with the cart in JSON format
     res.json(panier);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
   }
 };
-module.exports = { browse, addCart };
+module.exports = { browse, addCart, getCartByUser };

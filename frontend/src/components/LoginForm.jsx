@@ -1,16 +1,18 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { UserContext } from "../context/userContext";
+import { useCart } from "../context/cartContext"; // Importer le CartContext
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const { updateToken } = useContext(UserContext);
+  const { createCart } = useCart(); // Accéder à la fonction createCart
   const [message, setMessage] = useState("");
   const [dataForm, setDataForm] = useState({
     email: "",
     password: "",
   });
+
   const handlChange = (e) => {
     const { name, value } = e.target;
     setDataForm({ ...dataForm, [name]: value });
@@ -28,16 +30,18 @@ export default function LoginForm() {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.info("status res", res);
         if (res.status === 401) {
-          console.error(
-            `Failed to fetch user data. HTTP status: ${res.status}`
-          );
           setMessage(res.message);
           return;
         }
+
+        // Mettre à jour le token dans le UserContext
         updateToken(res.token);
+        // Naviguer vers la page d'accueil après la connexion et la création du panier
         navigate("/");
+
+        // Créer un panier pour l'utilisateur connecté
+        createCart();
       })
       .catch((err) => console.info("err :>>", err));
   };
@@ -62,7 +66,7 @@ export default function LoginForm() {
               name="email"
               value={dataForm.email}
               onChange={handlChange}
-              placeholder="Eamil"
+              placeholder="Email"
             />
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

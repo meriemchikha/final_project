@@ -33,7 +33,7 @@ const read = async (req, res, next) => {
 };
 
 // eslint-disable-next-line consistent-return
-const add = async (req, res) => {
+const addProductInWishlist = async (req, res) => {
   try {
     const { product_id } = req.body;
     const user_id = req.payload;
@@ -82,6 +82,6 @@ const deleteProductInWishlist = async (req, res) => {
 module.exports = {
   getAllProductsInWishlist,
   read,
-  add,
+  addProductInWishlist,
   deleteProductInWishlist,
 };

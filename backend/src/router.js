@@ -43,7 +43,7 @@ router.patch(
 
 // Routes Categories
 router.post("/category", categoryController.add);
-router.get("/category", categoryController.getAllProductCat);
+router.get("/category", categoryController.getAllCategory);
 router.get("/category/:id", categoryController.read);
 router.delete("/category/:id", categoryController.deleteCateg);
 router.put("/category", categoryController.update);
@@ -72,15 +72,17 @@ router.patch(
   upLoad,
   produitController.editOnlyPicture
 );
-router.get("/product/:id/comments", produitController.getAllCommentsByProduct);
+// router.patch("/product/:id", upLoad, produitController.edit);
+
 // Routes ProductInCart
 router.get("/all-product-cart", productCartController.getAllProductsInCart);
 router.get("/product-in-cart/:cart_id", productCartController.read);
 router.post("/product-in-cart", productCartController.add);
 router.delete(
-  "/product/:product_id/:cart_id",
+  "/product-in-cart/:product_id",
   productCartController.deleteProductInCart
 );
+router.put("/product-in-cart/:cart_id/:id", productCartController.edit);
 
 // Routes Commandes
 router.post("/command", commandController.create);
@@ -93,6 +95,7 @@ router.get("/comment", avisController.browse);
 router.get("/comment/:id", avisController.read);
 router.put("/comment/:id", avisController.edit);
 router.delete("/comment/:id", avisController.deleteAvis);
+router.get("/comments/:product_id", produitController.getAllCommentsByProduct);
 
 // Routes Paiement
 // router.post("/create-order", paymentController.create);
@@ -102,6 +105,7 @@ router.delete("/comment/:id", avisController.deleteAvis);
 // Route Panier
 router.get("/all-cart", verifyToken, cartController.browse);
 router.post("/cart", verifyToken, cartController.addCart);
+router.get("/cart/:id", cartController.getCartByUser);
 
 // Routes Wishlist
 // router.get("/wishlist", wishlistController.getAllProductsInWishlist);
@@ -111,7 +115,7 @@ router.get(
   wishlistController.getAllProductsInWishlist
 );
 router.get("/wishlist/:user_id", verifyToken, wishlistController.read);
-router.post("/wishlist", verifyToken, wishlistController.add);
+router.post("/wishlist", verifyToken, wishlistController.addProductInWishlist);
 router.delete(
   "/wishlist/:product_id",
   wishlistController.deleteProductInWishlist
@@ -120,7 +124,7 @@ router.delete(
 // Route newsletter
 router.get("/all-newsletter", newsletterController.getAllNewsletter);
 router.get("/newsletter/:id", newsletterController.read);
-
+router.post("/newsletter", newsletterController.add);
 /* ************************************************************************* */
 
 module.exports = router;

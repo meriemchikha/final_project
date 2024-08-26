@@ -12,38 +12,30 @@ class ProductInCartManager extends AbstractManager {
     return [result];
   }
 
-  async readProductByUser(cart_id) {
+  async readProductInCart(cart_id) {
     const [rows] = await this.database.query(
-      `select product_cart.*, product.id AS id_product, 
-     product.name ,
-  product.description,
-  product.price,
-  product.img_url,
-  product.stock,
-  product.product_category_id,
-  product_category.name AS product_category_name,
-  sous_product_category.name AS sous_product_category_name
-  from ${this.table} INNER JOIN product ON 
-  product_cart.product_id = product.id INNER JOIN product_category ON product.product_category_id = product_category.id
-   WHERE cart_id = ?`,
+      `SELECT p.*
+FROM product_cart pc
+JOIN product p ON pc.product_id = p.id
+WHERE pc.cart_id = ?`,
       [cart_id]
     );
     // return rows[0];
     return [rows];
   }
 
-  async readProductInCart(cartId) {
-    const [rows] = await this.database.query(
-      `select *
-  from ${this.table} 
-  WHERE cart_id = ?`,
-      [cartId]
-    );
-    // return rows[0];
-    return [rows];
-  }
+  // async readProductInCart(cartId) {
+  //   const [rows] = await this.database.query(
+  //     `select *
+  // from ${this.table}
+  // WHERE cart_id = ?`,
+  //     [cartId]
+  //   );
+  //   // return rows[0];
+  //   return [rows];
+  // }
 
-  async addProductInCart(quantity, product_id, cart_id) {
+  async addProductInCart(quantity, productId, cartId) {
     const [result] = await this.database.query(
       `INSERT INTO ${this.table} (
      quantity,
@@ -51,15 +43,22 @@ class ProductInCartManager extends AbstractManager {
       cart_id)
     VALUES (?, ?, ?)`,
       // eslint-disable-next-line camelcase
-      [quantity, product_id, cart_id]
+      [quantity, productId, cartId]
     );
     return result;
   }
 
-  async deleteProductInCart(cartId, productId) {
+  async deleteProductInCart(productId) {
     return this.database.query(
-      "DELETE FROM product_cart WHERE cart_id = ? && product_id = ?",
-      [cartId, productId]
+      "DELETE FROM product_cart WHERE  product_id = ?",
+      [productId]
+    );
+  }
+
+  async editQuantity(id, quantity, cart_id) {
+    return this.database.query(
+      `UPDATE ${this.table} SET quantity = ? WHERE id = ? && cart_id =?`,
+      [cart_id, quantity, id] // Ensure parameters match the query placeholders
     );
   }
 }

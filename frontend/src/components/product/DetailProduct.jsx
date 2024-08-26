@@ -49,7 +49,7 @@ export default function DetailProduct() {
   if (!product) {
     return <p>Produit non trouvé</p>;
   }
-
+  console.info("id de produit=====>", product_id);
   return (
     <>
       <div className="container  p-4 w-1/3">

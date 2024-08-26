@@ -2,7 +2,7 @@
 
 const tables = require("../tables");
 
-const getAllProductCat = async (req, res, next) => {
+const getAllCategory = async (req, res, next) => {
   try {
     const [productCat] = await tables.category.getAll();
 
@@ -67,4 +67,4 @@ const deleteCateg = async (req, res) => {
     res.status(500).send(error);
   }
 };
-module.exports = { getAllProductCat, update, read, add, deleteCateg };
+module.exports = { getAllCategory, update, read, add, deleteCateg };

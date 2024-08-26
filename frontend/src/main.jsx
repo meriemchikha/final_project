@@ -21,6 +21,7 @@ import WishlistProductPage from "./pages/WishlistProductPage";
 import Comment from "./components/comment/Comment";
 import Payment from "./components/payment/Payment";
 import Newsletter from "./components/newsletter/Newsletter";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function AppLayout() {
   return (
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
       { path: "/contact", element: <ContactPage /> },
       { path: "/wishlist", element: <WishlistProductPage /> },
       { path: "/comment", element: <Comment /> },
+      { path: "/checkout", element: <CheckoutPage /> },
     ],
   },
 ]);

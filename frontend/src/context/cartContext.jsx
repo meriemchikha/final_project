@@ -30,10 +30,10 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
-    if (cartId) {
-      localStorage.setItem("cartId", cartId);
+    if (cart.id) {
+      localStorage.setItem("cart_id", cart.id);
     }
-  }, [cart, cartId]);
+  }, [cart, cart.id]);
 
   const createCart = async () => {
     try {
@@ -44,7 +44,7 @@ export function CartProvider({ children }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: user.id }), // Envoyer l'ID utilisateur pour créer un panier
+          body: JSON.stringify({ userId: user?.user?.id }), // Envoyer l'ID utilisateur pour créer un panier
         }
       );
       const data = await response.json();
@@ -126,7 +126,7 @@ export function CartProvider({ children }) {
     if (cartId) {
       try {
         await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/cart/${productId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/product-in-cart/${cartId}`,
           {
             method: "PUT",
             headers: {

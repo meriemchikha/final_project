@@ -140,8 +140,8 @@ const getAllProductInSousCategory = async (req, res) => {
 };
 const getAllCommentsByProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    const [avis] = await tables.product.getAllCommentsByProduct(id);
+    const { product_id } = req.params;
+    const [avis] = await tables.product.getAllCommentsByProduct(product_id);
     if (avis.length > 0) {
       res.json(avis);
     } else {

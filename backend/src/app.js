@@ -29,8 +29,8 @@ app.use("/api", router);
 
 // Configuration de PayPal
 const environment = new paypal.core.SandboxEnvironment(
-  "AR64b-qx5vvSUzzR8IYjzU7pqS_MQj7xJ_4cgzEz8LJEmgwlo-8yDzsI3xspLfd84iSw6oVeFPQEIaEt",
-  "EHp_03seeX-qO2QQyYUpbcS9gHLuOteSdd93oaAdNtHbSJiyijKSp-PBrTQ_SztvY0igLe9mFI3AIQwB"
+  "ASMbz4aZmdtW2N1u0rTFROXnP_-RmZJtQHVFPSGO6QAVCRd5oqGuSe9vZ7Gp4WSCBoHoDbOLBInF0w0c",
+  "EOrSvrDYGJm9KY71WQSQvPRfyTP0yFGdun_QnRQLuToMKfxIF8AIKcA3tmYPlGxkwt57OzNx2f9yZzi9"
 );
 const client = new paypal.core.PayPalHttpClient(environment);
 

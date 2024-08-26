@@ -1,4 +1,22 @@
+/* eslint-disable consistent-return */
 const tables = require("../tables");
+
+const add = async (req, res, next) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  try {
+    const news = await tables.newsletter.addNewsletter(email);
+    console.info("Inserted email:", news);
+    res.status(201).json({ news });
+  } catch (err) {
+    console.error("Error inserting email:", err);
+    next(err);
+  }
+};
 
 const getAllNewsletter = async (req, res) => {
   try {
@@ -25,4 +43,4 @@ const read = async (req, res, next) => {
 };
 
 // eslint-disable-next-line no-undef
-module.exports = { getAllNewsletter, read };
+module.exports = { add, getAllNewsletter, read };

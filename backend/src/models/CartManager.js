@@ -44,5 +44,13 @@ class AvisManager extends AbstractManager {
 
     return newCart[0];
   }
+
+  async getCartByUser(id) {
+    const [rows] = await this.database.query(
+      `select * from ${this.table} where user_id = ?`,
+      [id]
+    );
+    return [rows];
+  }
 }
 module.exports = AvisManager;
