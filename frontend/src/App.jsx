@@ -11,14 +11,14 @@ function App() {
     AOS.init({ duration: 1500 });
   }, []);
   return (
-    <main className="">
+    <>
       <div>
         <Hero />
       </div>
       <div>
         <Item />
       </div>
-    </main>
+    </>
   );
 }
 

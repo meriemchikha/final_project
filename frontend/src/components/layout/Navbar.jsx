@@ -23,7 +23,7 @@ export default function Navbar() {
   // eslint-disable-next-line no-unused-vars
   const [menuItems, setMenuItems] = useState([
     { name: "Home", path: "/" },
-    { name: "Shop", path: "/shop" },
+
     { name: "Category", path: "/category" },
     { name: "Contact", path: "/contact" },
   ]);
@@ -62,12 +62,12 @@ export default function Navbar() {
             {dropDownVisible ? (
               <MdClose
                 onClick={toggleDropDown}
-                className="lg:hidden text-[22px] cursor-pointer"
+                className="lg:hidden text-[28px] cursor-pointer"
               />
             ) : (
               <HiMenuAlt3
                 onClick={toggleDropDown}
-                className="lg:hidden text-[22px] cursor-pointer"
+                className="lg:hidden text-[28px] cursor-pointer"
               />
             )}
             <SearchBar />
@@ -93,7 +93,7 @@ export default function Navbar() {
                   key={item.name}
                   onMouseEnter={() => handleCategoryMouseEnter(item.name)}
                   onMouseLeave={handleCategoryMouseLeave}
-                  className="relative leading-normal no-underline text-2xl hover:text-main"
+                  className="relative leading-normal no-underline text-3xl hover:text-main"
                 >
                   <Link to={item.path}>{item.name}</Link>
                   {categoryListVisible && activeCategory === "Category" && (
@@ -103,7 +103,7 @@ export default function Navbar() {
               ) : (
                 <li
                   key={item.name}
-                  className="leading-normal no-underline text-2xl hover:text-main"
+                  className="leading-normal no-underline text-3xl hover:text-main"
                 >
                   <Link to={item.path}>{item.name}</Link>
                 </li>
@@ -112,14 +112,14 @@ export default function Navbar() {
           </ul>
         </div>
         {dropDownVisible && (
-          <div className="lg:hidden w-full h-full px-6 fixed top-44 bg-white transition-all">
+          <div className="lg:hidden w-full h-full px-6 fixed top-44 bg-white transition-all flex justify-center flex-row">
             <div className="w-full flex flex-col items-baseline gap-4">
               <ul className="flex flex-col justify-center w-full">
                 {menuItems.map((item) => (
                   <Link
                     key={item.name}
                     to={item.path}
-                    className="px-6 h-10 flex items-center leading-normal no-underline font-bold text-2xl text-[15px] border-0 border-b border-[#ffffff1a] border-solid"
+                    className="  flex justify-center text-3xl py-6"
                   >
                     {item.name}
                   </Link>

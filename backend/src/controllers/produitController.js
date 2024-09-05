@@ -6,17 +6,6 @@ const tables = require("../tables");
 const create = async (req, res) => {
   try {
     const { name, description, price, stock, sous_category_id } = req.body;
-
-    // // Validation des champs requis
-    // if (!name || !description || !price || !stock || !sous_category_id) {
-    //   return res.status(400).send("Tous les champs sont requis.");
-    // }
-
-    // // Vérification si le fichier est présent
-    // if (!req.file || !req.file.path) {
-    //   return res.status(400).send("L'image est requise.");
-    // }
-
     let img_url = "";
     if (req.file) {
       img_url = req.file.path;

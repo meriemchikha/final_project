@@ -8,7 +8,7 @@ export default function Hero() {
   // eslint-disable-next-line react/no-unstable-nested-components, react/prop-types
 
   return (
-    <div className=" min-h-[65vh]">
+    <div className=" min-h-[70vh]">
       <div className=" bg-[url('/src/assets/bg2.jpg')] bg-no-repeat lg:absolute bg-cover bg-center w-full top-0 h-[830px]">
         <div className=" max-w-[1200px] mx-auto xl:px-0 px-4 lg:mt-72 pt-8 lg:flex items-center">
           <div
@@ -31,15 +31,15 @@ export default function Hero() {
             data-aos="fade-right"
             data-aos--delay="300"
           >
-            <div className=" relative z-10 rounded-[350px] flex items-center justify-center lg:h-[500px] h-[380px]">
+            <div className=" relative z-10 rounded-[350px] flex items-center justify-center lg:h-[500px] h-[300px]">
               <img
                 src={img1}
                 alt=" "
                 width={400}
-                className=" rounded-[450px]  lg:h-full z-10"
+                className=" rounded-[450px]  lg:h-full z-10 "
               />
 
-              <div className=" absolute z-10 left-4 right-0 bottom-0 lg:block flex justify-center">
+              <div className=" absolute z-10 -left-2 lg:left-4 right-52 bottom-0  md:-bottom-20 lg:block flex justify-center">
                 <div className=" bg-white rounded-full relative flex items-center justify-center w-[140px] h-[140px] min-slider-three-left-text ">
                   <RotatedText />
                   <div className=" bg-main text-white rounded-full flex items-center justify-center absolute w-[85px] h-[85px] ">

@@ -8,11 +8,11 @@ class CommandManager extends AbstractManager {
     super({ table: "command" });
   }
 
-  async create(payment, statut, cart_id, payment_id) {
+  async create(payment, statut, user_id, cart_id, payment_id) {
     const [result] = await this.database.query(
-      `insert into ${this.table} (payment, statut, cart_id, payment_id) values (?, ?, ?, ?)`,
+      `insert into ${this.table} (payment, statut, user_id, cart_id, payment_id) values (?,?, ?, ?, ?)`,
       // eslint-disable-next-line camelcase
-      [payment, statut, cart_id, payment_id]
+      [payment, statut, user_id, cart_id, payment_id]
     );
     return result;
   }
