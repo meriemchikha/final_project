@@ -3,8 +3,8 @@ const tables = require("../tables");
 
 const create = async (req, res) => {
   try {
-    const { total_price } = req.body;
-    const result = await tables.Paiement.create(total_price);
+    const { paypal_payment_id, totalAmount } = req.body;
+    const result = await tables.payment.create(paypal_payment_id, totalAmount);
     console.info(result.affectedRows);
     if (result.affectedRows) {
       res.status(201).json("created");

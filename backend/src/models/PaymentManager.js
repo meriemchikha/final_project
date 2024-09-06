@@ -6,11 +6,10 @@ class ProductInCartManager extends AbstractManager {
     super({ table: "payment" });
   }
 
-  async create(total_price) {
+  async create(paypal_payment_id, total_price) {
     const [result] = await this.database.query(
-      `insert into ${this.table} (total_price) values (?)`,
-      // eslint-disable-next-line camelcase
-      [total_price]
+      `INSERT INTO payment (paypal_payment_id, total_price) VALUES (?, ?)`,
+      [paypal_payment_id, total_price]
     );
     return result;
   }

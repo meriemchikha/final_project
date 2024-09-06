@@ -1,3 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-undef */
+/* eslint-disable camelcase */
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -5,6 +8,7 @@ const paypal = require("@paypal/checkout-server-sdk");
 
 // Import des routes API depuis le module router
 const router = require("./router");
+const tables = require("./tables");
 
 const app = express();
 
@@ -36,6 +40,16 @@ const client = new paypal.core.PayPalHttpClient(environment);
 
 // Route pour créer une commande PayPal
 app.post("/create-order", async (req, res) => {
+  const { cart_id, cartItems } = req.body;
+
+  if (!cart_id || !cartItems || !Array.isArray(cartItems)) {
+    return res.status(400).json({ error: "Données manquantes ou invalides" });
+  }
+
+  const totalAmount = cartItems
+    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+    .toFixed(2);
+
   const request = new paypal.orders.OrdersCreateRequest();
   request.prefer("return=representation");
   request.requestBody({
@@ -44,9 +58,7 @@ app.post("/create-order", async (req, res) => {
       {
         amount: {
           currency_code: "EUR",
-          value: req.body.cart
-            .reduce((acc, item) => acc + item.price * item.quantity, 0)
-            .toFixed(2),
+          value: totalAmount,
         },
       },
     ],
@@ -54,12 +66,59 @@ app.post("/create-order", async (req, res) => {
 
   try {
     const order = await client.execute(request);
-    res.json({ id: order.result.id });
+    const payment_id = order.result.id;
+
+    console.info(`Payment ID: ${payment_id}, Total Amount: ${totalAmount}`);
+
+    try {
+      const result = await tables.payment.create(payment_id, totalAmount);
+      console.info("Result from database insert:", result);
+      res.json({ payment_id, cart_id });
+    } catch (error) {
+      console.error(
+        "Erreur lors de l'enregistrement du paiement:",
+        error.message
+      );
+      res
+        .status(500)
+        .json({ error: "Erreur lors de l'enregistrement du paiement" });
+    }
   } catch (error) {
-    console.error("Erreur lors de la création de la commande:", error);
+    console.error("Erreur lors de la création de la commande:", error.message);
     res
       .status(500)
       .json({ error: "Erreur lors de la création de la commande" });
+  }
+});
+
+// eslint-disable-next-line consistent-return
+app.post("/save-command", async (req, res) => {
+  const { payment, statut, user_id, cart_id, payment_id } = req.body;
+
+  if (!payment || !statut || !user_id || !cart_id || !payment_id) {
+    return res.status(400).json({ error: "Tous les champs sont requis" });
+  }
+
+  console.info(
+    `Données reçues pour l'enregistrement : ${JSON.stringify(req.body)}`
+  );
+
+  try {
+    const result = await tables.command.create(
+      payment,
+      statut,
+      user_id,
+      cart_id,
+      payment_id
+    );
+    console.info("Résultat de l'insertion :", result);
+    res.status(201).json({ message: "Commande enregistrée avec succès" });
+  } catch (error) {
+    console.error(
+      "Erreur lors de l'enregistrement de la commande:",
+      error.message
+    );
+    res.status(500).json({ error: "Erreur interne du serveur" });
   }
 });
 

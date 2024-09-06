@@ -86,8 +86,9 @@ router.put("/product-in-cart/:cart_id/:id", productCartController.edit);
 
 // Routes Commandes
 router.post("/command", commandController.create);
-router.get("/command", commandController.browse);
-router.get("/command/:id", commandController.read);
+router.get("/command", verifyToken, commandController.browse);
+router.get("/command/:id", verifyToken, commandController.read);
+router.get("/all-command", verifyToken, commandController.getAllCommandByUser);
 
 // Routes Avis
 router.post("/comment", avisController.create);

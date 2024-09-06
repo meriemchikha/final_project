@@ -3,9 +3,7 @@ const tables = require("../tables");
 
 const create = async (req, res) => {
   try {
-    const id = req.payload;
-    const user_id = id;
-    const { payment, statut, cart_id, payment_id } = req.body;
+    const { payment, statut, user_id, cart_id, payment_id } = req.body;
     const result = await tables.command.create(
       payment,
       statut,
@@ -55,7 +53,7 @@ const read = async (req, res, next) => {
   }
 };
 
-const getCommandByUser = async (req, res) => {
+const getAllCommandByUser = async (req, res) => {
   try {
     const id = req.payload;
     const [commandsByUser] = await tables.command.getAllCommandByUser(id);
@@ -64,4 +62,4 @@ const getCommandByUser = async (req, res) => {
     res.status(err);
   }
 };
-module.exports = { create, browse, read, getCommandByUser };
+module.exports = { create, browse, read, getAllCommandByUser };
