@@ -13,7 +13,7 @@ export function UserProvider({ children }) {
   );
   console.info("token from userProvider", token);
   const [user, setUser] = useState({});
-  console.info("id de User:", user?.user?.id);
+
   console.info("Token:", token);
 
   useEffect(() => {
@@ -25,15 +25,12 @@ export function UserProvider({ children }) {
     // Si un token est présent, fetch les données utilisateur
     const fetchUserData = async () => {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch("http://localhost:3310/api/profile", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           setUser({});

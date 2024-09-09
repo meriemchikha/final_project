@@ -31,15 +31,22 @@ export default function CartPage() {
       });
   }, []);
 
+  useEffect(() => {
+    // Met à jour CartProducts lorsque le panier (cart) change
+    setCartProducts(cart);
+  }, [cart]);
   // Calculer le prix total
   const getTotalPrice = () => {
-    return cart.reduce(
-      (total, product) => total + product.price * product.quantity,
-      0
-    );
+    return cart && cart.length > 0
+      ? cart.reduce(
+          (total, product) => total + product.price * product.quantity,
+          0
+        )
+      : 0;
   };
 
   const totalCart = getTotalPrice();
+
   const handleDelete = (productId) => {
     setCartProducts((prevProducts) =>
       prevProducts.filter((product) => product.id !== productId)

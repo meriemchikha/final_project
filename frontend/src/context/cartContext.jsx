@@ -37,16 +37,13 @@ export function CartProvider({ children }) {
 
   const createCart = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user?.user?.id }), // Envoyer l'ID utilisateur pour créer un panier
-        }
-      );
+      const response = await fetch(`http://localhost:3310/api/cart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user?.user?.id }), // Envoyer l'ID utilisateur pour créer un panier
+      });
       const data = await response.json();
       setCartId(data.id); // Stocker l'ID du panier
       localStorage.setItem("cartId", data.id);
@@ -54,7 +51,7 @@ export function CartProvider({ children }) {
       console.error("Erreur lors de la création du panier", error);
     }
   };
-
+  console.info("cart=====>", cart);
   useEffect(() => {
     if (user && !cartId) {
       // Créer un panier lorsque l'utilisateur se connecte
@@ -68,7 +65,7 @@ export function CartProvider({ children }) {
     }
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/product-in-cart`,
+        `http://localhost:3310/api/product-in-cart`,
         {
           method: "POST",
           headers: {
@@ -100,14 +97,9 @@ export function CartProvider({ children }) {
   const removeFromCart = async (productId) => {
     if (!cartId) return; // Pas de panier, pas de suppression
     try {
-      await fetch(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/product/${productId}/${cartId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      await fetch(`http://localhost:3310/api/product/${productId}/${cartId}`, {
+        method: "DELETE",
+      });
       setCart((prevCart) =>
         prevCart.filter((product) => product.id !== productId)
       );
@@ -125,16 +117,13 @@ export function CartProvider({ children }) {
 
     if (cartId) {
       try {
-        await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/product-in-cart/${cartId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ quantity }),
-          }
-        );
+        await fetch(`http://localhost:3310/api/product-in-cart/${cartId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ quantity }),
+        });
       } catch (error) {
         console.error(
           "Erreur lors de la mise à jour de la quantité du panier",

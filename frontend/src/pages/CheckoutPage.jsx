@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import React from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useCart } from "../context/cartContext";
@@ -17,8 +18,6 @@ export default function CheckoutPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      {" "}
-      {/* Utilisation de Flexbox pour centrer */}
       <div className="checkout-page w-[600px] p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-slate-950 text-2xl font-bold pb-10 text-center">
           Récapitulatif
@@ -49,7 +48,27 @@ export default function CheckoutPage() {
           }}
         >
           <div className="paypal-button-container mt-8">
-            <PayPalButtons />
+            <PayPalButtons
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: totalCart.toFixed(2), // Total du panier
+                      },
+                    },
+                  ],
+                });
+              }}
+              onApprove={(data, actions) => {
+                return actions.order.capture().then((details) => {
+                  alert(
+                    `Transaction réalisée par  ${details.payer.name.given_name}`
+                  );
+                  // Enregistrez la commande dans votre base de données
+                });
+              }}
+            />
           </div>
         </PayPalScriptProvider>
       </div>

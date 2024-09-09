@@ -14,7 +14,7 @@ const addCart = async (req, res, next) => {
     const cart = await tables.cart.addCart(userId); // Utilise la méthode du manager
     console.info("New cart entry:", cart);
 
-    res.status(201).json({ cart }); // Réponse JSON avec les données du panier ajoutées
+    res.status(201).json(cart.id); // Réponse JSON avec les données du panier ajoutées
   } catch (err) {
     console.error("Error adding to cart:", err);
 
